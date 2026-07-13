@@ -331,8 +331,8 @@
     }
 
     path.deleted {
-      opacity: .28;
-      stroke-dasharray: 4 5;
+      opacity: 0.6;
+      stroke-dasharray: 6 5;
     }
 
     circle.commit {
@@ -869,18 +869,18 @@
           <text x="80" y="308" class="branch-label" fill="var(--muted)" text-anchor="middle" font-size="10">init</text>
 
           <path d="M160,280 Q170,280 180,260 T240,180" fill="none" stroke="var(--coral-2)" stroke-width="3"
-            class="branchline branchA" data-step="1" />
+            class="branchline branchA" data-step="1" data-delete-step="8" />
           <path d="M160,280 Q170,280 180,300 T240,380" fill="none" stroke="var(--violet)" stroke-width="3"
-            class="branchline branchB" data-step="1" />
+            class="branchline branchB" data-step="1" data-delete-step="8" />
           <circle cx="160" cy="280" r="5.5" fill="var(--muted)" />
 
           <g data-step="1"><text x="245" y="163" class="branch-label" fill="var(--coral-2)">feature/login-ui</text></g>
           <g data-step="1"><text x="245" y="400" class="branch-label" fill="var(--violet)">feature/login-api</text></g>
 
           <path d="M240,180 L620,180" stroke="var(--coral-2)" stroke-width="3" class="branchline branchA"
-            data-step="1" />
+            data-step="1" data-delete-step="8" />
           <path d="M240,380 L620,380" stroke="var(--violet)" stroke-width="3" class="branchline branchB"
-            data-step="1" />
+            data-step="1" data-delete-step="8" />
 
           <g data-step="2">
             <circle class="commit" cx="300" cy="180" r="6" fill="var(--coral-2)" />
@@ -1036,7 +1036,7 @@
           <path d="M170,290 Q180,290 190,268 T230,160" fill="none" stroke="var(--coral-2)" stroke-width="3"
             class="branchline branchA" data-sstep="0" />
           <path d="M170,290 Q180,290 190,312 T230,410" fill="none" stroke="var(--violet)" stroke-width="3"
-            class="branchline branchB" data-sstep="0" />
+            class="branchline branchB" data-sstep="0" data-delete-step="1" />
           <circle cx="170" cy="290" r="5.5" fill="var(--muted)" />
 
           <g data-sstep="0">
@@ -1053,7 +1053,7 @@
           <path d="M230,160 L760,160" stroke="var(--coral-2)" stroke-width="3" class="branchline branchA"
             data-sstep="0" />
           <path d="M230,410 L470,410" stroke="var(--violet)" stroke-width="3" class="branchline branchB"
-            data-sstep="0" />
+            data-sstep="0" data-delete-step="1" />
 
           <!-- Step 1: BE merges into main -->
           <g data-sstep="1">
@@ -1247,9 +1247,9 @@
 
           <!-- Step 1: Branch out FE and BE -->
           <path d="M220,280 Q230,280 240,255 T290,170" fill="none" stroke="var(--coral-2)" stroke-width="3"
-            class="branchline branchA" data-estep="1" />
+            class="branchline branchA" data-estep="1" data-delete-step="8" />
           <path d="M220,280 Q230,280 240,305 T290,400" fill="none" stroke="var(--violet)" stroke-width="3"
-            class="branchline branchB" data-estep="1" />
+            class="branchline branchB" data-estep="1" data-delete-step="8" />
           <circle cx="220" cy="280" r="5.5" fill="var(--muted)" />
 
           <g data-estep="1">
@@ -1258,9 +1258,9 @@
           </g>
 
           <path d="M290,170 L850,170" stroke="var(--coral-2)" stroke-width="3" class="branchline branchA"
-            data-estep="1" />
+            data-estep="1" data-delete-step="8" />
           <path d="M290,400 L540,400" stroke="var(--violet)" stroke-width="3" class="branchline branchB"
-            data-estep="1" />
+            data-estep="1" data-delete-step="8" />
 
           <!-- Step 2: BE commit Mock API + Draft PR -->
           <g data-estep="2">
@@ -1856,11 +1856,10 @@
         el.classList.toggle('on', isVisible);
       });
 
-      if (deleteBranches !== false) {
-        svg.querySelectorAll('.branchA,.branchB').forEach(p => {
-          p.classList.toggle('deleted', step >= deleteBranches);
-        });
-      }
+      svg.querySelectorAll('[data-delete-step]').forEach(p => {
+        const delStep = parseInt(p.getAttribute('data-delete-step'));
+        p.classList.toggle('deleted', step >= delStep);
+      });
 
       const isLastStep = step === steps.length - 1;
       document.getElementById('prevBtn').disabled = step === 0;
