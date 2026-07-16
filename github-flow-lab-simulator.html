@@ -1906,6 +1906,21 @@
       }
     }
 
+    /** Xáo trộn phương án; gắn cờ correct — đáp án đúng không cố định vị trí. */
+    function shuffleOptions(opts, ansIndex) {
+      const items = opts.map((text, i) => ({ text: text, correct: i === ansIndex }));
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = items[i];
+        items[i] = items[j];
+        items[j] = tmp;
+      }
+      return items;
+    }
+
+    // Giữ thứ tự đã xáo cho mỗi bước predict (tránh nhảy vị trí khi re-render)
+    let predictShuffles = {};
+
     function renderPredict(s) {
       const pending = isPredictPending(s);
       if (teachMode && s.predict) {
@@ -1914,30 +1929,39 @@
         predictOpts.innerHTML = '';
         predictWhy.classList.remove('show');
         predictWhy.textContent = '';
-        s.predict.opts.forEach((opt, i) => {
+
+        const key = predKey();
+        if (!predictShuffles[key]) {
+          predictShuffles[key] = shuffleOptions(s.predict.opts, s.predict.ans);
+        }
+        const shuffled = predictShuffles[key];
+        const already = !!predicted[key];
+
+        shuffled.forEach((item) => {
           const b = document.createElement('button');
           b.className = 'predict-opt';
-          b.textContent = opt;
-          if (predicted[predKey()]) {
+          b.textContent = item.text;
+          b.dataset.correct = item.correct ? '1' : '0';
+          if (already) {
             b.disabled = true;
-            if (i === s.predict.ans) b.classList.add('correct');
+            if (item.correct) b.classList.add('correct');
           } else {
             b.addEventListener('click', () => {
-              predicted[predKey()] = true;
-              const correct = i === s.predict.ans;
-              predictOpts.querySelectorAll('.predict-opt').forEach((btn, j) => {
+              predicted[key] = true;
+              const pickedCorrect = item.correct;
+              predictOpts.querySelectorAll('.predict-opt').forEach((btn) => {
                 btn.disabled = true;
-                if (j === s.predict.ans) btn.classList.add('correct');
-                else if (j === i && !correct) btn.classList.add('wrong');
+                if (btn.dataset.correct === '1') btn.classList.add('correct');
+                else if (btn === b && !pickedCorrect) btn.classList.add('wrong');
               });
-              predictWhy.innerHTML = (correct ? '✅ Đúng! ' : '❌ Chưa chính xác. ') + s.predict.why;
+              predictWhy.innerHTML = (pickedCorrect ? '✅ Đúng! ' : '❌ Chưa chính xác. ') + s.predict.why;
               predictWhy.classList.add('show');
               render();
             });
           }
           predictOpts.appendChild(b);
         });
-        if (predicted[predKey()]) {
+        if (already) {
           predictWhy.innerHTML = '✅ ' + s.predict.why;
           predictWhy.classList.add('show');
         }
@@ -2181,19 +2205,42 @@
       quizTabName.textContent = getConfig().title;
       quizOverlay.classList.add('open');
       const questions = quizData[activeTab] || [];
-      let html = '';
+      quizContent.innerHTML = '';
+
       questions.forEach((q, idx) => {
-        html += '<div class="quiz-question" data-idx="' + idx + '"><p>Câu ' + (idx + 1) + ': ' + q.q + '</p>';
-        html += q.opts.map((opt, oIdx) =>
-          '<button class="quiz-option" data-oidx="' + oIdx + '">' + opt + '</button>'
-        ).join('');
-        html += '<div class="quiz-explanation"></div></div>';
+        const qDiv = document.createElement('div');
+        qDiv.className = 'quiz-question';
+        qDiv.dataset.idx = String(idx);
+
+        const p = document.createElement('p');
+        p.textContent = 'Câu ' + (idx + 1) + ': ' + q.q;
+        qDiv.appendChild(p);
+
+        // Xáo trộn mỗi lần mở quiz — đáp án đúng không luôn ở vị trí 2
+        const shuffled = shuffleOptions(q.opts, q.ans);
+        const correctText = q.opts[q.ans];
+        qDiv.dataset.correctText = correctText;
+
+        shuffled.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-option';
+          btn.textContent = item.text;
+          btn.dataset.correct = item.correct ? '1' : '0';
+          btn.addEventListener('click', handleQuizAnswer);
+          qDiv.appendChild(btn);
+        });
+
+        const expl = document.createElement('div');
+        expl.className = 'quiz-explanation';
+        qDiv.appendChild(expl);
+        quizContent.appendChild(qDiv);
       });
-      html += '<div class="quiz-score" style="display:none"><div class="score-num">0/' + questions.length + '</div><p>điểm</p><div class="lab-checklist" id="labCheck" style="display:none"></div></div>';
-      quizContent.innerHTML = html;
-      quizContent.querySelectorAll('.quiz-option').forEach(btn => {
-        btn.addEventListener('click', handleQuizAnswer);
-      });
+
+      const scoreDiv = document.createElement('div');
+      scoreDiv.className = 'quiz-score';
+      scoreDiv.style.display = 'none';
+      scoreDiv.innerHTML = '<div class="score-num">0/' + questions.length + '</div><p>điểm</p><div class="lab-checklist" id="labCheck" style="display:none"></div>';
+      quizContent.appendChild(scoreDiv);
     }
 
     function closeQuiz() { quizOverlay.classList.remove('open'); }
@@ -2201,21 +2248,23 @@
     quizOverlay.addEventListener('click', (e) => { if (e.target === quizOverlay) closeQuiz(); });
 
     function handleQuizAnswer(e) {
-      const btn = e.target;
+      const btn = e.target.closest('.quiz-option');
+      if (!btn || btn.disabled) return;
       const questionDiv = btn.closest('.quiz-question');
-      const qIdx = parseInt(questionDiv.dataset.idx);
-      const oIdx = parseInt(btn.dataset.oidx);
-      const question = quizData[activeTab][qIdx];
-      const isCorrect = oIdx === question.ans;
+      const isCorrect = btn.dataset.correct === '1';
       if (isCorrect) quizScore++;
       questionDiv.querySelectorAll('.quiz-option').forEach(b => {
         b.disabled = true;
-        const bIdx = parseInt(b.dataset.oidx);
-        if (bIdx === question.ans) b.classList.add('correct');
-        else if (bIdx === oIdx && !isCorrect) b.classList.add('wrong');
+        if (b.dataset.correct === '1') b.classList.add('correct');
+        else if (b === btn && !isCorrect) b.classList.add('wrong');
       });
       const expl = questionDiv.querySelector('.quiz-explanation');
-      expl.innerHTML = isCorrect ? '✅ Chính xác!' : '❌ Sai rồi. Đáp án: <b>' + question.opts[question.ans] + '</b>';
+      const correctText = questionDiv.dataset.correctText || '';
+      expl.innerHTML = isCorrect ? '✅ Chính xác!' : '❌ Sai rồi. Đáp án: <b></b>';
+      if (!isCorrect) {
+        const b = expl.querySelector('b');
+        if (b) b.textContent = correctText;
+      }
       expl.classList.add('show');
 
       const allQuestions = quizContent.querySelectorAll('.quiz-question');
