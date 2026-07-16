@@ -3,8 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Mô phỏng GitHub Flow — Lab thực hành nhóm</title>
+  <title>SmartExam Lab — Mô phỏng GitHub Flow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lab diễn tập khô GitHub Flow cho nhóm SmartExam (lop-cntt/smartexam) — bám bài giảng Git & GitHub v3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
@@ -52,15 +53,8 @@
       --body-bg: linear-gradient(180deg, #e8ecf4 0%, var(--bg) 100%);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
 
     body {
       background: var(--body-bg);
@@ -71,41 +65,45 @@
       transition: background .35s ease, color .25s ease;
     }
 
-    .wrap {
-      max-width: 1180px;
-      margin: 0 auto;
-    }
+    html.projector body { font-size: 17px; }
+    html.projector .step-title { font-size: 22px !important; }
+    html.projector .step-desc { font-size: 16px !important; }
+    html.projector .term { font-size: 15px !important; }
+    html.projector .role b { font-size: 15px; }
 
-    header {
-      margin-bottom: 22px;
-      position: relative;
-    }
+    .wrap { max-width: 1180px; margin: 0 auto; }
 
-    .theme-toggle {
+    header { margin-bottom: 18px; position: relative; }
+
+    .header-actions {
       position: absolute;
       top: 0;
       right: 0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-btn {
       width: 44px;
       height: 44px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--panel);
       color: var(--text);
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: border-color .2s, background .2s, transform .2s;
     }
-
-    .theme-toggle:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: scale(1.08);
-    }
-
-    html.light .theme-toggle:hover {
-      border-color: rgba(0, 0, 0, 0.25);
+    .icon-btn:hover { transform: scale(1.06); border-color: rgba(255,255,255,0.25); }
+    html.light .icon-btn:hover { border-color: rgba(0,0,0,0.25); }
+    .icon-btn.on {
+      background: linear-gradient(135deg, var(--coral), #c8402a);
+      color: #fff;
+      border-color: transparent;
     }
 
     .eyebrow {
@@ -130,23 +128,41 @@
       font-size: clamp(24px, 3.4vw, 34px);
       margin: 0 0 8px;
       letter-spacing: -0.01em;
+      padding-right: 160px;
     }
-
-    h1 span {
-      color: var(--coral-2);
-    }
+    h1 span { color: var(--coral-2); }
 
     .sub {
       color: var(--muted);
       font-size: 15px;
-      max-width: 780px;
+      max-width: 820px;
       line-height: 1.55;
     }
+    .sub code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background: rgba(91,141,239,0.12);
+      padding: 1px 6px;
+      border-radius: 6px;
+      color: var(--blue);
+    }
+
+    .story-banner {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(232,86,60,0.12), rgba(91,141,239,0.1));
+      border: 1px solid var(--border);
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .story-banner b { color: var(--coral-2); }
 
     .tabs {
       display: flex;
       gap: 8px;
-      margin: 22px 0 18px;
+      margin: 20px 0 14px;
       flex-wrap: wrap;
     }
 
@@ -161,31 +177,32 @@
       background: var(--panel);
       color: var(--muted);
       transition: .18s ease;
+      position: relative;
     }
-
-    .tab:hover {
-      color: var(--text);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
+    .tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
     .tab.active {
       background: linear-gradient(135deg, var(--coral), #c8402a);
       color: #fff;
       border-color: transparent;
       box-shadow: 0 8px 20px -8px rgba(232, 86, 60, 0.6);
     }
+    .tab.done::after {
+      content: '✓';
+      margin-left: 6px;
+      font-size: 11px;
+      opacity: 0.9;
+    }
+    .tab.active.done::after { opacity: 1; }
 
     .roles {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
     @media (max-width:900px) {
-      .roles {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .roles { grid-template-columns: repeat(2, 1fr); }
+      h1 { padding-right: 0; margin-top: 52px; }
     }
 
     .role {
@@ -197,206 +214,102 @@
       gap: 10px;
       align-items: flex-start;
       transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, transform .25s ease;
+      opacity: 0.55;
     }
-
-    .role .dot {
-      transition: box-shadow .25s ease, transform .25s ease;
-    }
-
-    .role[data-role="frontend"].active {
-      border-color: var(--coral-2);
-      background: rgba(232, 86, 60, 0.1);
-      box-shadow: 0 0 0 1px var(--coral-2), 0 10px 24px -10px rgba(232, 86, 60, .55);
-      transform: translateY(-2px);
-    }
-
-    .role[data-role="frontend"].active .dot {
-      box-shadow: 0 0 0 5px rgba(232, 86, 60, 0.28);
-      transform: scale(1.15);
-    }
-
-    .role[data-role="backend"].active {
-      border-color: var(--violet);
-      background: rgba(155, 107, 255, 0.1);
-      box-shadow: 0 0 0 1px var(--violet), 0 10px 24px -10px rgba(155, 107, 255, .55);
-      transform: translateY(-2px);
-    }
-
-    .role[data-role="backend"].active .dot {
-      box-shadow: 0 0 0 5px rgba(155, 107, 255, 0.28);
-      transform: scale(1.15);
-    }
-
-    .role[data-role="reviewer"].active {
-      border-color: var(--amber);
-      background: rgba(242, 181, 68, 0.1);
-      box-shadow: 0 0 0 1px var(--amber), 0 10px 24px -10px rgba(242, 181, 68, .55);
-      transform: translateY(-2px);
-    }
-
-    .role[data-role="reviewer"].active .dot {
-      box-shadow: 0 0 0 5px rgba(242, 181, 68, 0.28);
-      transform: scale(1.15);
-    }
-
-    .role[data-role="lead"].active {
-      border-color: var(--blue);
-      background: rgba(91, 141, 239, 0.1);
-      box-shadow: 0 0 0 1px var(--blue), 0 10px 24px -10px rgba(91, 141, 239, .55);
-      transform: translateY(-2px);
-    }
-
-    .role[data-role="lead"].active .dot {
-      box-shadow: 0 0 0 5px rgba(91, 141, 239, 0.28);
-      transform: scale(1.15);
-    }
-
-    .role:not(.active) {
-      opacity: .72;
-    }
-
-    .dot {
-      width: 11px;
-      height: 11px;
+    .role .avatar {
+      width: 36px; height: 36px;
       border-radius: 50%;
-      margin-top: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
       flex-shrink: 0;
     }
-
-    .role b {
-      font-size: 13.5px;
-      display: block;
+    .role b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+    .role small { color: var(--muted); font-size: 11.5px; line-height: 1.35; display: block; }
+    .role.active {
+      opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -12px rgba(0,0,0,0.45);
     }
-
-    .role small {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
+    .role[data-role="frontend"].active { border-color: var(--coral-2); background: rgba(232,86,60,0.08); }
+    .role[data-role="backend"].active { border-color: var(--violet); background: rgba(155,107,255,0.08); }
+    .role[data-role="reviewer"].active { border-color: var(--amber); background: rgba(242,181,68,0.08); }
+    .role[data-role="lead"].active { border-color: var(--blue); background: rgba(91,141,239,0.08); }
 
     .grid {
       display: grid;
-      grid-template-columns: 1.55fr 1fr;
-      gap: 18px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
     }
-
-    @media (max-width:900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width:900px) { .grid { grid-template-columns: 1fr; } }
 
     .panel {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 18px 18px 16px;
-      position: relative;
+      padding: 16px 18px 18px;
     }
-
     .panel-title {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 15px;
-      margin: 0 0 12px;
+      font-size: 14px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
     }
-
     .step-badge {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 100px;
-      padding: 3px 10px;
+      font-weight: 500;
       color: var(--muted);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 100px;
     }
 
-    svg {
-      width: 100%;
-      height: auto;
-      display: block;
+    .branch-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    path.branchline { transition: opacity .3s, stroke-dashoffset .5s; }
+    path.branchline.deleted { opacity: 0.25; stroke-dasharray: 4 4; }
+    circle.commit { transition: transform .3s; }
+    [data-step], [data-cstep], [data-sstep], [data-rstep], [data-istep], [data-estep] {
+      opacity: 0; transition: opacity .35s ease;
     }
-
-    .branch-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-    }
-
-    path.branchline {
-      fill: none;
-      stroke-width: 3;
-      transition: stroke .3s ease, opacity .4s ease, stroke-dasharray .3s ease;
-    }
-
-    path.branchline.deleted {
-      opacity: 0.6;
-      stroke-dasharray: 6 5 !important;
-    }
-
-    circle.commit {
-      transition: opacity .35s ease, transform .35s ease;
-    }
-
-    [data-step],
-    [data-cstep],
-    [data-sstep],
-    [data-rstep],
-    [data-istep],
-    [data-estep] {
-      opacity: 0;
-      transition: opacity .4s ease;
-    }
-
-    [data-step].on,
-    [data-cstep].on,
-    [data-sstep].on,
-    [data-rstep].on,
-    [data-istep].on,
-    [data-estep].on {
+    [data-step].on, [data-cstep].on, [data-sstep].on, [data-rstep].on, [data-istep].on, [data-estep].on {
       opacity: 1;
     }
-
-    .pr-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-    }
-
-    .conflict-x {
-      transition: opacity .3s ease;
+    .pr-badge { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; }
+    .conflict-x { animation: pulse 1.2s ease infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
     }
 
     .stepper {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 12px;
       flex-wrap: wrap;
     }
-
-    .step-dots {
-      display: flex;
-      gap: 7px;
-    }
-
+    .step-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; flex: 1; }
     .step-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
       border: 1px solid var(--border);
-      background: var(--bg-2);
+      background: var(--panel-2);
       color: var(--muted);
+      font-size: 11px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      transition: .18s ease;
+      transition: .15s;
     }
-
     .step-dot.on {
       background: var(--coral);
       color: #fff;
@@ -415,18 +328,13 @@
       color: var(--text);
       transition: .15s ease;
     }
-
-    .navbtn:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    html.light .navbtn:hover {
-      border-color: rgba(0, 0, 0, 0.25);
-    }
-
-    .navbtn:disabled {
-      opacity: .35;
-      cursor: not-allowed;
+    .navbtn:hover { border-color: rgba(255,255,255,0.3); }
+    html.light .navbtn:hover { border-color: rgba(0,0,0,0.25); }
+    .navbtn:disabled { opacity: .35; cursor: not-allowed; }
+    .navbtn.primary {
+      background: linear-gradient(135deg, var(--coral), #c8402a);
+      color: #fff;
+      border-color: transparent;
     }
 
     .step-title {
@@ -435,13 +343,113 @@
       font-size: 16px;
       margin: 14px 0 4px;
     }
-
     .step-desc {
       color: var(--muted);
       font-size: 13.5px;
       line-height: 1.55;
       margin-bottom: 2px;
     }
+    .flow-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+      background: rgba(91,141,239,0.12);
+      border: 1px solid rgba(91,141,239,0.3);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    /* Predict panel */
+    .predict-box {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(155,107,255,0.1);
+      border: 1px dashed rgba(155,107,255,0.45);
+      display: none;
+    }
+    .predict-box.show { display: block; }
+    .predict-box h3 {
+      margin: 0 0 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      color: var(--violet);
+    }
+    .predict-opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      font-size: 13px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: .15s;
+    }
+    .predict-opt:hover:not(:disabled) { border-color: var(--violet); transform: translateX(3px); }
+    .predict-opt.correct { background: rgba(49,196,141,0.18); border-color: var(--green); color: var(--green); }
+    .predict-opt.wrong { background: rgba(240,85,90,0.12); border-color: var(--red); color: var(--red); opacity: 0.8; }
+    .predict-why {
+      margin-top: 8px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--green);
+      display: none;
+    }
+    .predict-why.show { display: block; }
+    .reveal-content.hidden-by-predict { display: none !important; }
+
+    /* GitHub chrome */
+    .gh-chrome {
+      display: none;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--term-bg);
+    }
+    .gh-chrome.show { display: block; }
+    .gh-chrome-head {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .gh-tab {
+      padding: 10px 14px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+    }
+    .gh-tab.on {
+      color: var(--text);
+      border-bottom-color: var(--coral-2);
+    }
+    .gh-chrome-body {
+      padding: 12px 14px;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    .gh-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-right: 6px;
+    }
+    .gh-badge.open { background: rgba(49,196,141,0.2); color: var(--green); }
+    .gh-badge.draft { background: rgba(155,107,255,0.2); color: var(--violet); }
+    .gh-badge.conflict { background: rgba(240,85,90,0.2); color: var(--red); }
+    .gh-badge.merged { background: rgba(91,141,239,0.2); color: var(--blue); }
+    .gh-badge.changes { background: rgba(242,181,68,0.2); color: var(--amber); }
 
     .term {
       background: var(--term-bg);
@@ -455,24 +463,10 @@
       min-height: 96px;
       transition: background .25s ease;
     }
-
-    .term .dim {
-      color: var(--muted);
-    }
-
-    .term .cmd {
-      color: var(--cmd-text);
-    }
-
-    .term .cmd::before {
-      content: "$ ";
-      color: var(--green);
-    }
-
-    .term .comment {
-      color: var(--comment);
-      font-style: italic;
-    }
+    .term .dim { color: var(--muted); }
+    .term .cmd { color: var(--cmd-text); }
+    .term .cmd::before { content: "$ "; color: var(--green); }
+    .term .comment { color: var(--comment); font-style: italic; }
 
     .callout {
       margin-top: 12px;
@@ -482,49 +476,34 @@
       line-height: 1.5;
       display: none;
     }
-
-    .callout.show {
-      display: block;
-    }
-
+    .callout.show { display: block; }
     .callout.warn {
       background: rgba(242, 181, 68, 0.12);
       border: 1px solid rgba(242, 181, 68, 0.35);
       color: #f6d488;
     }
-
     .callout.danger {
       background: rgba(240, 85, 90, 0.12);
       border: 1px solid rgba(240, 85, 90, 0.4);
       color: #ffb2b4;
     }
-
     .callout.ok {
       background: rgba(49, 196, 141, 0.12);
       border: 1px solid rgba(49, 196, 141, 0.4);
       color: #8bf0c9;
     }
-
     .callout.info {
       background: rgba(91, 141, 239, 0.12);
       border: 1px solid rgba(91, 141, 239, 0.4);
       color: #a8c8ff;
     }
-
-    html.light .callout.warn {
-      color: #7a5a0a;
-    }
-
-    html.light .callout.danger {
-      color: #8b1a1e;
-    }
-
-    html.light .callout.ok {
-      color: #0e6e45;
-    }
-
-    html.light .callout.info {
-      color: #1e4a8a;
+    html.light .callout.warn { color: #7a5a0a; }
+    html.light .callout.danger { color: #8b1a1e; }
+    html.light .callout.ok { color: #0e6e45; }
+    html.light .callout.info { color: #1e4a8a; }
+    .callout code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
     }
 
     .codebox {
@@ -540,46 +519,31 @@
       display: none;
       transition: background .25s ease;
     }
-
-    .codebox.show {
-      display: block;
-    }
-
-    .codebox .m1 {
-      color: var(--violet);
-    }
-
-    .codebox .m2 {
-      color: var(--muted);
-    }
-
-    .codebox .m3 {
-      color: var(--blue);
-    }
-
-    .codebox .resolved {
-      color: var(--green);
-    }
+    .codebox.show { display: block; }
+    .codebox .m1 { color: var(--violet); }
+    .codebox .m2 { color: var(--muted); }
+    .codebox .m3 { color: var(--blue); }
+    .codebox .resolved { color: var(--green); }
 
     footer {
       margin-top: 28px;
       text-align: center;
       color: var(--muted);
       font-size: 12.5px;
+      line-height: 1.6;
+    }
+    footer b { color: var(--coral-2); }
+    footer kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      background: var(--panel);
     }
 
-    footer b {
-      color: var(--coral-2);
-    }
-
-    /* === PROGRESS BAR === */
     .progress-bar-wrap {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 9999;
-      height: 4px;
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 9999; height: 4px;
       background: rgba(0,0,0,0.2);
     }
     .progress-bar-fill {
@@ -589,141 +553,94 @@
       box-shadow: 0 0 8px rgba(232,86,60,0.5);
     }
 
-    /* === QUIZ MODAL === */
-    .quiz-overlay {
+    /* Toast */
+    .toast {
       position: fixed;
-      inset: 0;
-      z-index: 10000;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10001;
+      background: var(--panel);
+      border: 1px solid var(--green);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: .35s ease;
+      max-width: 320px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* Confetti canvas */
+    #confettiCanvas {
+      position: fixed; inset: 0; pointer-events: none; z-index: 10002;
+    }
+
+    /* Quiz */
+    .quiz-overlay {
+      position: fixed; inset: 0; z-index: 10000;
       background: rgba(0,0,0,0.6);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-    .quiz-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .quiz-overlay.open { opacity: 1; pointer-events: auto; }
     .quiz-modal {
-      background: rgba(27, 33, 68, 0.85);
+      position: relative;
+      background: rgba(27, 33, 68, 0.92);
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 20px;
       padding: 28px 28px 22px;
-      max-width: 600px;
-      width: 92%;
-      max-height: 85vh;
-      overflow-y: auto;
+      max-width: 640px; width: 92%; max-height: 85vh; overflow-y: auto;
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
     html.light .quiz-modal {
-      background: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,0.94);
       border-color: rgba(0,0,0,0.12);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     }
     .quiz-modal h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-      margin: 0 0 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-size: 20px; margin: 0 0 18px;
     }
     .quiz-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 22px;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; color: var(--muted);
+      font-size: 22px; cursor: pointer; width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
       border-radius: 8px;
-      transition: background 0.2s;
     }
-    .quiz-close:hover {
-      background: rgba(255,255,255,0.1);
-    }
-    html.light .quiz-close:hover {
-      background: rgba(0,0,0,0.06);
-    }
-    .quiz-question {
-      margin-bottom: 22px;
-    }
-    .quiz-question p {
-      font-weight: 600;
-      font-size: 14px;
-      margin: 0 0 10px;
-    }
+    .quiz-close:hover { background: rgba(255,255,255,0.1); }
+    .quiz-question { margin-bottom: 22px; }
+    .quiz-question p { font-weight: 600; font-size: 14px; margin: 0 0 10px; }
     .quiz-option {
-      display: block;
-      width: 100%;
-      text-align: left;
-      font-size: 13px;
-      padding: 10px 14px;
-      margin-bottom: 6px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      display: block; width: 100%; text-align: left; font-size: 13px;
+      padding: 10px 14px; margin-bottom: 6px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
+      cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.15s;
       font-family: 'Inter', sans-serif;
     }
-    .quiz-option:hover:not(:disabled) {
-      border-color: var(--coral-2);
-      transform: translateX(4px);
+    .quiz-option:hover:not(:disabled) { border-color: var(--coral-2); transform: translateX(4px); }
+    .quiz-option:disabled { cursor: default; }
+    .quiz-option.correct { background: rgba(49,196,141,0.18); border-color: var(--green); color: var(--green); }
+    .quiz-option.wrong { background: rgba(240,85,90,0.12); border-color: var(--red); color: var(--red); opacity: 0.7; }
+    .quiz-explanation { font-size: 12.5px; color: var(--green); margin-top: 6px; line-height: 1.4; display: none; }
+    .quiz-explanation.show { display: block; }
+    .quiz-score { text-align: center; padding: 18px 0; font-family: 'Space Grotesk', sans-serif; }
+    .quiz-score .score-num { font-size: 42px; font-weight: 700; color: var(--green); }
+    .quiz-score p { color: var(--muted); margin: 6px 0 0; }
+    .lab-checklist {
+      text-align: left; margin-top: 14px; padding: 12px 14px;
+      border-radius: 12px; background: rgba(49,196,141,0.1);
+      border: 1px solid rgba(49,196,141,0.3); font-size: 13px; line-height: 1.55;
     }
-    .quiz-option:disabled {
-      cursor: default;
-    }
-    .quiz-option.correct {
-      background: rgba(49,196,141,0.18);
-      border-color: var(--green);
-      color: var(--green);
-    }
-    .quiz-option.wrong {
-      background: rgba(240,85,90,0.12);
-      border-color: var(--red);
-      color: var(--red);
-      opacity: 0.7;
-    }
-    .quiz-explanation {
-      font-size: 12.5px;
-      color: var(--green);
-      margin-top: 6px;
-      line-height: 1.4;
-      display: none;
-    }
-    .quiz-explanation.show {
-      display: block;
-    }
-    .quiz-score {
-      text-align: center;
-      padding: 18px 0;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-    .quiz-score .score-num {
-      font-size: 42px;
-      font-weight: 700;
-      color: var(--green);
-    }
-    .quiz-score p {
-      color: var(--muted);
-      margin: 6px 0 0;
-    }
+    .lab-checklist b { color: var(--green); }
 
-    /* === SVG ANIMATIONS === */
     @keyframes drawLine {
       from { stroke-dashoffset: 1000; }
       to { stroke-dashoffset: 0; }
@@ -741,67 +658,35 @@
       animation: commitPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-
-    /* === MOBILE UX === */
-    @media (max-width: 600px) {
-      .tabs {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding-bottom: 4px;
-      }
-      .tabs::-webkit-scrollbar { display: none; }
-      .tab { white-space: nowrap; flex-shrink: 0; }
-      .svg-scroll-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-      }
-      .svg-scroll-wrap::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 40px;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, var(--panel));
-        pointer-events: none;
-        z-index: 1;
-      }
-      .svg-scroll-wrap svg {
-        min-width: 700px;
-      }
-      .step-dot {
-        min-width: 40px;
-        min-height: 40px;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
       }
     }
 
-    /* === PRINT STYLESHEET === */
-    @media print {
-      body {
-        background: #fff !important;
-        color: #1a1d2e !important;
-        padding: 16px;
+    @media (max-width: 600px) {
+      .tabs {
+        flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; padding-bottom: 4px;
       }
-      .progress-bar-wrap, .progress-label, .theme-toggle, .stepper, footer,
-      .quiz-overlay, .navbtn, .step-dots {
+      .tabs::-webkit-scrollbar { display: none; }
+      .tab { white-space: nowrap; flex-shrink: 0; }
+      .svg-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
+      .svg-scroll-wrap svg { min-width: 700px; }
+      .step-dot { min-width: 40px; min-height: 40px; }
+      .header-actions { position: static; justify-content: flex-end; margin-bottom: 8px; }
+      h1 { margin-top: 0; }
+    }
+
+    @media print {
+      body { background: #fff !important; color: #1a1d2e !important; padding: 16px; }
+      .progress-bar-wrap, .header-actions, .stepper, footer, .quiz-overlay, .navbtn, .step-dots, .toast, #confettiCanvas, .predict-box {
         display: none !important;
       }
-      .panel {
-        box-shadow: none !important;
-        border: 1px solid #ddd;
-        break-inside: avoid;
-      }
-      .panel, .term, .codebox, .callout, .role, .tab {
-        background: #fff !important;
-        color: #1a1d2e !important;
-      }
-      .callout.show {
-        border: 1px solid #999;
-        color: #333 !important;
-      }
+      .panel { box-shadow: none !important; border: 1px solid #ddd; break-inside: avoid; }
+      .panel, .term, .codebox, .callout, .role, .tab { background: #fff !important; color: #1a1d2e !important; }
+      .reveal-content.hidden-by-predict { display: block !important; }
       .tabs { display: none !important; }
       .grid { display: block; }
       .grid > .panel { margin-bottom: 16px; }
@@ -811,19 +696,29 @@
 </head>
 
 <body>
-
   <div class="progress-bar-wrap">
     <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
   </div>
-  <div class="wrap">
+  <canvas id="confettiCanvas"></canvas>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <div class="wrap">
     <header>
-      <button class="theme-toggle" id="themeToggle" title="Chuyển sáng/tối" aria-label="Đổi giao diện sáng/tối">🌙</button>
-      <div class="eyebrow">● Lab thực hành — Làm việc nhóm trên GitHub</div>
+      <div class="header-actions">
+        <button class="icon-btn" id="teachToggle" title="Chế độ dự đoán (P)" aria-label="Bật/tắt chế độ dự đoán" aria-pressed="true">🎯</button>
+        <button class="icon-btn" id="projectorToggle" title="Chế độ máy chiếu" aria-label="Bật/tắt chế độ máy chiếu" aria-pressed="false">🖥️</button>
+        <button class="icon-btn" id="themeToggle" title="Chuyển sáng/tối (T)" aria-label="Đổi giao diện sáng/tối">🌙</button>
+      </div>
+      <div class="eyebrow">● Lab SmartExam — Diễn tập khô GitHub Flow</div>
       <h1>Mô phỏng <span>GitHub Flow</span> — 6 kịch bản thực tế</h1>
-      <div class="sub">Dùng để trình chiếu trước lớp — minh họa quy trình làm việc nhóm 3–4 sinh viên trên Organization
-        GitHub: luồng chuẩn (có review phản hồi), xung đột code, đồng bộ nhánh, revert khi có lỗi, và quản lý tiến độ
-        bằng Issues &amp; Draft PR.</div>
+      <div class="sub">
+        Nhóm 4 người làm <b>SmartExam</b> trên Organization
+        <code>lop-cntt</code> · repo <code>smartexam</code> · nhánh <code>main</code> được bảo vệ.
+        Chiếu lên lớp → hỏi dự đoán → reveal lệnh → rồi mới làm lab thật (mục 18).
+      </div>
+      <div class="story-banner" id="storyBanner">
+        <b>Ngày làm việc:</b> <span id="storyText">An, Bình, Chi, Dũng cùng ship tính năng Đăng nhập cho SmartExam.</span>
+      </div>
     </header>
 
     <div class="tabs" role="tablist" aria-label="Các kịch bản thực hành">
@@ -837,32 +732,29 @@
 
     <div class="roles">
       <div class="role" data-role="frontend">
-        <div class="dot" style="background:var(--coral-2)"></div>
-        <div><b>Frontend Dev</b><small>Write · nhánh feature/login-ui (giao diện)</small></div>
+        <div class="avatar" style="background:var(--coral-2)">B</div>
+        <div><b>Bình · Frontend</b><small>Write · feature/login-ui</small></div>
       </div>
       <div class="role" data-role="backend">
-        <div class="dot" style="background:var(--violet)"></div>
-        <div><b>Backend Dev</b><small>Write · nhánh feature/login-api (API)</small></div>
+        <div class="avatar" style="background:var(--violet)">C</div>
+        <div><b>Chi · Backend</b><small>Write · feature/login-api</small></div>
       </div>
       <div class="role" data-role="reviewer">
-        <div class="dot" style="background:var(--amber)"></div>
-        <div><b>Reviewer</b><small>Triage/Write · đọc &amp; Approve PR</small></div>
+        <div class="avatar" style="background:var(--amber)">A</div>
+        <div><b>An · Reviewer</b><small>Maintain · đọc &amp; Approve PR</small></div>
       </div>
       <div class="role" data-role="lead">
-        <div class="dot" style="background:var(--blue)"></div>
-        <div><b>Trưởng nhóm</b><small>Maintain/Admin · Merge PR vào main</small></div>
+        <div class="avatar" style="background:var(--blue)">A/D</div>
+        <div><b>An merge · Dũng CI</b><small>Maintain / Admin · merge &amp; deploy</small></div>
       </div>
     </div>
 
     <div class="grid">
-
       <div class="panel">
-        <div class="panel-title">🌳 Sơ đồ nhánh (git graph) <span class="step-badge" id="stepBadge">Bước 0 / 8</span>
-        </div>
+        <div class="panel-title">🌳 Sơ đồ nhánh (git graph) <span class="step-badge" id="stepBadge">Bước 0 / 8</span></div>
 
         <div class="svg-scroll-wrap">
-        <!-- ===== SVG 1: FLOW (9 steps 0-8) ===== -->
-        <svg id="svgFlow" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
+<svg id="svgFlow" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
           <line x1="40" y1="280" x2="960" y2="280" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="266" class="branch-label" fill="var(--blue)">main</text>
           <circle cx="80" cy="280" r="6" fill="var(--blue)" />
@@ -945,8 +837,7 @@
           </g>
         </svg>
 
-        <!-- ===== SVG 2: CONFLICT (8 steps 0-7) ===== -->
-        <svg id="svgConflict" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg id="svgConflict" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" style="display:none">
           <line x1="40" y1="280" x2="960" y2="280" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="266" class="branch-label" fill="var(--blue)">main</text>
           <circle cx="80" cy="280" r="6" fill="var(--blue)" />
@@ -1028,8 +919,7 @@
           </g>
         </svg>
 
-        <!-- ===== SVG 3: SYNC (6 steps 0-5) ===== -->
-        <svg id="svgSync" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg id="svgSync" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" style="display:none">
           <line x1="40" y1="290" x2="960" y2="290" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="276" class="branch-label" fill="var(--blue)">main</text>
           <circle cx="80" cy="290" r="6" fill="var(--blue)" />
@@ -1106,8 +996,7 @@
           </g>
         </svg>
 
-        <!-- ===== SVG 4: REVERT (6 steps 0-5) ===== -->
-        <svg id="svgRevert" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg id="svgRevert" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="display:none">
           <line x1="40" y1="200" x2="860" y2="200" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="186" class="branch-label" fill="var(--blue)">main</text>
           <circle cx="80" cy="200" r="6" fill="var(--blue)" />
@@ -1162,8 +1051,7 @@
           </g>
         </svg>
 
-        <!-- ===== SVG 5: ISSUES & DRAFT PR (6 steps 0-5) ===== -->
-        <svg id="svgIssues" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg id="svgIssues" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" style="display:none">
           <line x1="40" y1="260" x2="960" y2="260" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="246" class="branch-label" fill="var(--blue)">main</text>
           <circle cx="80" cy="260" r="6" fill="var(--blue)" />
@@ -1229,8 +1117,7 @@
           </g>
         </svg>
 
-        <!-- ===== SVG 6: END-TO-END (9 steps 0-8) ===== -->
-        <svg id="svgEndToEnd" viewBox="0 0 1100 540" xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg id="svgEndToEnd" viewBox="0 0 1100 540" xmlns="http://www.w3.org/2000/svg" style="display:none">
           <!-- Main branch -->
           <line x1="40" y1="280" x2="1060" y2="280" stroke="var(--blue)" stroke-width="3.5" />
           <text x="44" y="266" class="branch-label" fill="var(--blue)">main</text>
@@ -1343,58 +1230,61 @@
         <div class="stepper">
           <button class="navbtn" id="prevBtn" aria-label="Quay lại bước trước">← Bước trước</button>
           <div class="step-dots" id="stepDots" role="group" aria-label="Điều hướng các bước"></div>
-          <button class="navbtn" id="nextBtn" aria-label="Tiến tới bước tiếp theo">Bước tiếp →</button>
+          <button class="navbtn primary" id="nextBtn" aria-label="Tiến tới bước tiếp theo">Bước tiếp →</button>
         </div>
 
+        <div id="flowTag" class="flow-tag" style="display:none"></div>
         <div class="step-title" id="stepTitle" aria-live="polite"></div>
         <div class="step-desc" id="stepDesc" aria-live="polite"></div>
 
-        <!-- Callouts -->
-        <div class="callout warn" id="calloutWarn">⚠️ <b>Branch protection:</b> nhánh <code>main</code> yêu cầu tối
-          thiểu 1 approval — không ai được tự merge PR của chính mình.</div>
-        <div class="callout danger" id="calloutDanger">⛔ GitHub báo: <i>"This branch has conflicts that must be
-            resolved"</i> — vì Frontend và Backend cùng sửa một dòng cấu hình trong <code>config.js</code>.</div>
-        <div class="callout ok" id="calloutOk">✅ Xung đột đã được giải quyết thủ công và merge thành công vào
-          <code>main</code>.
+        <div class="predict-box" id="predictBox" role="group" aria-label="Câu hỏi dự đoán">
+          <h3 id="predictQ">🎯 Lớp đoán trước?</h3>
+          <div id="predictOpts"></div>
+          <div class="predict-why" id="predictWhy"></div>
         </div>
-        <div class="callout danger" id="calloutDangerFeedback">⛔ <b>GitHub báo:</b> PR bị chặn merge do có 1 <b>Request
-            changes</b> chưa được giải quyết từ Reviewer.</div>
-        <div class="callout ok" id="calloutOkFeedback">✅ <b>Approved:</b> Tất cả các thay đổi yêu cầu đã được đáp ứng và
-          PR sẵn sàng để merge.</div>
-        <div class="callout info" id="calloutSync">💡 <b>Tip:</b> Luôn chạy <code>git fetch</code> +
-          <code>git merge origin/main</code> trước khi tạo PR để tránh conflict và đảm bảo nhánh của bạn có code mới
-          nhất.
+
+        <div class="reveal-content" id="revealContent">
+          <div class="callout warn" id="calloutWarn">⚠️ <b>Branch protection + quy ước nhóm:</b> nhánh <code>main</code> yêu cầu ≥ 1 approval. <b>Luật máy:</b> GitHub chặn bạn tự Approve PR của mình, nhưng <b>không</b> mặc định chặn nút Merge. <b>Quy ước nhóm:</b> không ai tự merge PR của chính mình (An merge giúp).</div>
+          <div class="callout danger" id="calloutDanger">⛔ GitHub báo: <i>"This branch has conflicts that must be resolved"</i> — Bình và Chi cùng sửa một dòng trong <code>config.js</code>.</div>
+          <div class="callout ok" id="calloutOk">✅ Xung đột đã được giải quyết thủ công (merge main vào nhánh, sửa markers, commit) và merge thành công vào <code>main</code>.</div>
+          <div class="callout danger" id="calloutDangerFeedback">⛔ <b>GitHub báo:</b> PR bị chặn merge do còn <b>Request changes</b> chưa giải quyết từ An.</div>
+          <div class="callout ok" id="calloutOkFeedback">✅ <b>Approved:</b> thay đổi đã đáp ứng feedback — PR sẵn sàng để An merge.</div>
+          <div class="callout info" id="calloutSync">💡 <b>Tip (bài giảng):</b> pull/merge <code>origin/main</code> vào nhánh thường xuyên — nhánh nhỏ, ngắn ngày, ít conflict.</div>
+          <div class="callout danger" id="calloutRevert">🚨 <b>Lỗi nghiêm trọng!</b> Deploy SmartExam sập trang chủ do CSS/JS vừa merge. Ưu tiên cứu <code>main</code> bằng Revert.</div>
+          <div class="callout ok" id="calloutRevertOk">✅ <b>Main đã khôi phục!</b> Revert PR gỡ code lỗi. Code cũ vẫn trong lịch sử — Bình tạo nhánh fix để sửa đàng hoàng.</div>
+          <div class="callout danger" id="calloutE2eDanger">⛔ <b>An phát hiện lỗi:</b> API trả 401 nhưng UI không redirect về /login. Request changes trước khi merge.</div>
+          <div class="callout ok" id="calloutE2eOk">✅ <b>Approved:</b> 401 → redirect /login + thông báo "Phiên đăng nhập hết hạn".</div>
+          <div class="callout info" id="calloutE2eSync">💡 <b>Sync:</b> nhánh FE thiếu API mới từ main. Cần <code>git fetch</code> + <code>git merge origin/main</code>.</div>
+          <div class="callout warn" id="calloutE2eDraft">📝 <b>Draft PR:</b> Chi mở Draft để chốt Mock API contract — Bình code song song. Reviewer không Approve Draft (chủ ý).</div>
+          <div class="callout warn" id="calloutDraft">📝 <b>Draft PR:</b> chưa Ready — chỉ xin góp ý sớm. Không Approve/Merge Draft.</div>
+          <div class="callout warn" id="calloutPublic">⚠️ <b>Cảnh báo lab:</b> Branch protection chỉ miễn phí trên repo <b>Public</b> (org Free). Lab bắt buộc repo <code>smartexam</code> Public — hoặc GitHub Education.</div>
+          <div class="callout info" id="calloutPrivilege">💡 <b>Least privilege:</b> Bình/Chi chỉ cần <b>Write</b>; An <b>Maintain</b> (merge); Dũng <b>Admin</b> (CI/protection). Không cấp Admin cho cả nhóm.</div>
         </div>
-        <div class="callout danger" id="calloutRevert">🚨 <b>Lỗi nghiêm trọng!</b> Sau khi deploy, phát hiện trang chủ
-          bị sập hoàn toàn do code CSS/JS lỗi vừa merge.</div>
-        <div class="callout ok" id="calloutRevertOk">✅ <b>Main đã khôi phục!</b> Revert PR đã gỡ bỏ code lỗi. Dev có thể
-          tạo nhánh mới để sửa đúng cách.</div>
-        <div class="callout danger" id="calloutE2eDanger">⛔ <b>Reviewer phát hiện lỗi:</b> Khi API trả 401 Unauthorized,
-          UI không tự redirect về trang đăng nhập. Yêu cầu xử lý đúng HTTP status trước khi merge.</div>
-        <div class="callout ok" id="calloutE2eOk">✅ <b>Approved:</b> Logic redirect đã hoạt động đúng. Khi API trả 401,
-          người dùng được chuyển về /login kèm thông báo "Phiên đăng nhập hết hạn".</div>
-        <div class="callout info" id="calloutE2eSync">💡 <b>Sync:</b> Nhánh FE đang thiếu code API mới từ main. Cần chạy
-          <code>git fetch</code> + <code>git merge origin/main</code> để tích hợp API thật trước khi tiếp tục code UI.
-        </div>
-        <div class="callout warn" id="calloutE2eDraft">📝 <b>Draft PR:</b> BE mở Draft PR để chia sẻ schema Mock API sớm
-          cho FE. FE có thể code song song dựa trên contract này mà không cần chờ API thật.</div>
-        <div class="callout warn" id="calloutDraft">📝 <b>Draft PR:</b> PR này chưa sẵn sàng merge — chỉ để nhận góp ý
-          sớm từ đồng đội. Reviewer không thể Approve một Draft PR.</div>
       </div>
 
       <div class="panel">
-        <div class="panel-title">💻 Terminal / Thao tác trên GitHub</div>
-        <div class="term" id="termBox"></div>
-        <div class="codebox" id="codeBox"></div>
-      </div>
+        <div class="panel-title">💻 Terminal / GitHub <span class="step-badge" id="teachBadge">🎯 Dự đoán ON</span></div>
 
+        <div class="reveal-content" id="rightReveal">
+          <div class="gh-chrome" id="ghChrome">
+            <div class="gh-chrome-head" id="ghChromeHead"></div>
+            <div class="gh-chrome-body" id="ghChromeBody"></div>
+          </div>
+          <div class="term" id="termBox"></div>
+          <div class="codebox" id="codeBox"></div>
+        </div>
+        <div id="askClassHint" style="display:none;margin-top:16px;padding:16px;border-radius:12px;border:1px dashed var(--violet);color:var(--muted);font-size:13.5px;line-height:1.5">
+          🎯 <b style="color:var(--violet)">Chế độ dự đoán:</b> hỏi lớp trước khi bấm chọn đáp án bên trái. Terminal sẽ hiện sau khi trả lời (hoặc tắt 🎯 để trình chiếu nhanh).
+        </div>
+      </div>
     </div>
 
-    <footer>Dùng phím <b>←</b> / <b>→</b> hoặc bấm nút để chuyển bước · Chuyển tab để xem các tình huống khác nhau
+    <footer>
+      Phím <kbd>←</kbd> <kbd>→</kbd> chuyển bước · <kbd>1</kbd>–<kbd>6</kbd> đổi kịch bản · <kbd>P</kbd> dự đoán · <kbd>T</kbd> theme · <kbd>H</kbd> hỏi lớp<br>
+      Bám <b>Bài giảng Git &amp; GitHub v3</b> · mục 13–18 · org <b>lop-cntt</b> / repo <b>smartexam</b>
     </footer>
   </div>
 
-  <!-- Quiz Overlay -->
   <div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
     <div class="quiz-modal" id="quizModal">
       <button class="quiz-close" id="quizClose" aria-label="Đóng bài trắc nghiệm">×</button>
@@ -1404,382 +1294,536 @@
   </div>
 
   <script>
-    /* ===== STEP DATA ===== */
+
+    /* ===== STEP DATA — bám bài giảng v3 (git switch, Conventional Commits, An/Bình/Chi/Dũng) ===== */
+
+    const stories = {
+      flow: "An, Bình, Chi ship tính năng Đăng nhập: Bình làm UI, Chi làm API, An review & merge theo GitHub Flow.",
+      conflict: "Bình và Chi vô tình sửa cùng một dòng API_BASE_URL trong config.js — GitHub chặn merge, phải resolve tay.",
+      sync: "Chi merge API trước; nhánh UI của Bình bị outdated — cần fetch + merge origin/main trước khi mở PR.",
+      revert: "PR UI vừa merge làm sập trang chủ SmartExam lúc deploy. An Revert để cứu main, Bình hotfix đàng hoàng.",
+      issues: "An tạo Issue thiết kế CSDL bài thi → giao Chi → Draft PR + Closes #4 → góp ý sớm → Ready → merge.",
+      endtoend: "FE/BE song song cho phiên thi: Mock API Draft → Chi merge API → Bình sync → review lỗi 401 → fix → CI/CD (Dũng)."
+    };
 
     const flowSteps = [
       {
         title: "Bước 0 — Trạng thái ban đầu",
-        desc: "Cả nhóm cùng clone repository từ Organization GitHub. Mọi người đang đứng ở nhánh main. Cả hai sẽ cùng làm tính năng Đăng nhập: Frontend làm giao diện, Backend làm API.",
-        term: `<span class="cmd">git clone https://github.com/lop-cntt/smartexam.git</span>\n<span class="comment"># Cả Frontend Dev và Backend Dev cùng có bản sao repo</span>`,
-        callouts: [],
-        roles: ["frontend", "backend"]
+        desc: "Cả nhóm clone repo smartexam từ Organization lop-cntt. Đang đứng trên main (được branch protection). Bình làm giao diện đăng nhập, Chi làm API.",
+        term: `<span class="cmd">git clone https://github.com/lop-cntt/smartexam.git</span>\n<span class="cmd">cd smartexam</span>\n<span class="comment"># Repo Public · main bảo vệ · Bình & Chi quyền Write</span>`,
+        callouts: ["public", "privilege"],
+        roles: ["frontend", "backend"],
+        flowTag: "Chuẩn bị",
+        gh: { tabs: ["Code", "Issues", "Pull requests"], active: 0, body: `<span class="gh-badge open">Public</span> <b>lop-cntt/smartexam</b><br>Branch: <code>main</code> · protected · require 1 review` },
+        predict: {
+          q: "Trước khi code, Bình/Chi nên làm gì đầu tiên?",
+          opts: ["Push thẳng lên main", "Clone repo và kiểm tra đang ở main", "Xóa nhánh main", "Tạo Organization mới"],
+          ans: 1,
+          why: "Clone bản sao đầy đủ về máy, đứng trên main sạch trước khi tách nhánh — bước 0 của GitHub Flow."
+        }
       },
       {
         title: "Bước 1 — Tạo nhánh (branch)",
-        desc: "Mỗi thành viên tách một nhánh riêng từ main để làm việc độc lập, không ảnh hưởng code của người khác.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git checkout -b feature/login-ui</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git checkout -b feature/login-api</span>`,
+        desc: "Mỗi người tách nhánh riêng từ main — không ai code trực tiếp trên main. Đây là bước 1 của GitHub Flow.",
+        term: `<span class="dim">Bình (Frontend):</span>\n<span class="cmd">git switch -c feature/login-ui</span>\n\n<span class="dim">Chi (Backend):</span>\n<span class="cmd">git switch -c feature/login-api</span>\n<span class="comment"># git switch -c ≡ git checkout -b (bài giảng dùng switch)</span>`,
         callouts: [],
-        roles: ["frontend", "backend"]
+        roles: ["frontend", "backend"],
+        flowTag: "GitHub Flow · 1/6 — Tạo nhánh",
+        predict: {
+          q: "Bình nên gõ lệnh nào để tạo và chuyển sang nhánh UI?",
+          opts: ["git push origin main", "git switch -c feature/login-ui", "git merge main", "git commit -m \"ui\""],
+          ans: 1,
+          why: "git switch -c tạo nhánh mới và chuyển sang ngay — rõ nghĩa hơn checkout -b."
+        }
       },
       {
         title: "Bước 2 — Commit code ban đầu",
-        desc: "Frontend code giao diện form đăng nhập (nhưng nút Đăng nhập đang bị lệch css trên mobile). Backend code API xác thực và commit.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "Them form dang nhap (nut bam dang bi lech mobile)"</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "Them API xac thuc dang nhap"</span>`,
+        desc: "Bình commit form đăng nhập (nút mobile còn lệch). Chi commit API xác thực. Dùng Conventional Commits: feat:, fix:, docs:.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "feat: them form dang nhap"</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "feat: them API xac thuc dang nhap"</span>`,
         callouts: [],
-        roles: ["frontend", "backend"]
+        roles: ["frontend", "backend"],
+        flowTag: "GitHub Flow · 2/6 — Commit",
+        predict: {
+          q: "Thông điệp commit tốt theo bài giảng bắt đầu bằng?",
+          opts: ["update / fix bug / asdf", "feat: / fix: / docs: (Conventional Commits)", "Chỉ tên người commit", "Số issue thôi"],
+          ans: 1,
+          why: "Conventional Commits giúp đồng đội (và bạn sau 6 tháng) đọc lịch sử nhanh."
+        }
       },
       {
         title: "Bước 3 — Mở Pull Request",
-        desc: "Đẩy nhánh lên GitHub và mở Pull Request để yêu cầu review gộp code vào main.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git push -u origin feature/login-ui</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git push -u origin feature/login-api</span>\n\n<span class="comment"># Trên GitHub: cả hai bấm "Compare & pull request"</span>`,
+        desc: "Đẩy nhánh lên GitHub và mở PR vào main. Mô tả rõ + gắn issue nếu có (Closes #N). PR nhỏ, một việc một PR.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git push -u origin feature/login-ui</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git push -u origin feature/login-api</span>\n\n<span class="comment"># GitHub → Compare & pull request</span>\n<span class="comment"># Title: "feat: form đăng nhập mobile"</span>\n<span class="comment"># Body: mô tả + cách test</span>`,
         callouts: [],
-        roles: ["frontend", "backend"]
+        roles: ["frontend", "backend"],
+        flowTag: "GitHub Flow · 3/6 — Mở PR",
+        gh: { tabs: ["Conversation", "Files changed", "Checks"], active: 0, body: `<span class="gh-badge open">Open</span> <b>PR #1</b> feature/login-ui → main<br><span class="gh-badge open">Open</span> <b>PR #2</b> feature/login-api → main` },
+        predict: {
+          q: "Sau git push nhánh feature, bước tiếp trên GitHub là?",
+          opts: ["Merge thẳng không cần ai xem", "Mở Pull Request đề nghị gộp vào main", "Xóa repo", "Force-push main"],
+          ans: 1,
+          why: "GitHub Flow: mọi thay đổi vào main đều qua PR để review."
+        }
       },
       {
-        title: "Bước 4 — Reviewer test thử & Request Changes",
-        desc: "Reviewer chạy thử giao diện (dùng PR preview hoặc kéo code về local để test) và phát hiện nút bấm bị lệch vỡ trên màn hình điện thoại. Reviewer chọn \"Request changes\" thay vì Approve, viết feedback yêu cầu sửa lại.",
-        term: `<span class="comment"># Thao tác trên web GitHub:</span>\n<span class="comment"># Tab "Files changed" → "Review changes" → "Request changes" đối với PR #1</span>\n<span class="comment"># Bình luận: "Nut dang nhap bi loi hien thi tren mobile, vui long can giua lai."</span>`,
+        title: "Bước 4 — An review & Request Changes",
+        desc: "An (Maintain) test UI: nút Đăng nhập vỡ layout mobile. Chọn Request changes + comment trên dòng code — không Approve vội.",
+        term: `<span class="comment"># An trên GitHub: PR #1 → Files changed</span>\n<span class="comment"># Review changes → Request changes</span>\n<span class="comment"># "Nút đăng nhập lệch trên mobile, vui lòng căn giữa."</span>`,
         callouts: ["danger_feedback"],
-        code: `<span class="m1">Reviewer requested changes on PR #1:</span>\n<span class="comment">"Nút Đăng nhập bị lệch và vỡ layout trên thiết bị di động. Cần căn giữa lại."</span>`,
-        roles: ["reviewer"]
+        code: `<span class="m1">An requested changes on PR #1:</span>\n<span class="comment">"Nút Đăng nhập bị lệch trên mobile. Cần căn giữa lại."</span>`,
+        roles: ["reviewer"],
+        flowTag: "GitHub Flow · 4/6 — Review",
+        gh: { tabs: ["Conversation", "Files changed", "Checks"], active: 1, body: `<span class="gh-badge changes">Changes requested</span> PR #1 · Bình<br>1 review comment trên style.css` },
+        predict: {
+          q: "An thấy bug UI — nên chọn gì?",
+          opts: ["Approve luôn cho nhanh", "Request changes + comment cụ thể", "Xóa PR của Bình", "Push đè lên main"],
+          ans: 1,
+          why: "Request changes chặn merge cho đến khi dev sửa — review có trách nhiệm."
+        }
       },
       {
-        title: "Bước 5 — Sửa lỗi tại Local",
-        desc: "Frontend Dev nhận phản hồi từ PR. Dev sửa lại CSS căn giữa nút bấm ở máy mình, commit và tiếp tục push lên chính nhánh feature/login-ui.",
-        term: `<span class="comment"># Sửa file style.css trên máy local...</span>\n<span class="cmd">git add style.css</span>\n<span class="cmd">git commit -m "Fix: can giua nut dang nhap tren mobile"</span>\n<span class="cmd">git push</span>\n<span class="comment"># PR trên GitHub tự động nhận commit mới và hết bị chặn</span>`,
+        title: "Bước 5 — Bình sửa lỗi tại local",
+        desc: "Bình không tạo PR mới: sửa CSS trên đúng nhánh feature/login-ui, commit fix:, push — PR tự cập nhật.",
+        term: `<span class="dim">Bình (đang ở feature/login-ui):</span>\n<span class="comment"># sửa style.css...</span>\n<span class="cmd">git add style.css</span>\n<span class="cmd">git commit -m "fix: can giua nut dang nhap tren mobile"</span>\n<span class="cmd">git push</span>\n<span class="comment"># PR #1 tự nhận commit mới</span>`,
         callouts: [],
-        roles: ["frontend"]
+        roles: ["frontend"],
+        flowTag: "GitHub Flow · 4/6 — Sửa theo feedback",
+        predict: {
+          q: "Sau Request changes, Bình có cần mở PR mới không?",
+          opts: ["Có, luôn tạo PR mới", "Không — push thêm commit vào nhánh cũ, PR tự cập nhật", "Phải xóa nhánh rồi clone lại", "Chỉ An mới được sửa"],
+          ans: 1,
+          why: "Cùng một PR theo dõi cả vòng đời sửa lỗi — lịch sử gọn."
+        }
       },
       {
-        title: "Bước 6 — Kiểm tra lại & Approve cả 2 PR",
-        desc: "Reviewer kiểm tra lại code mới của Frontend, thấy đã hoạt động chuẩn xác. Reviewer bấm Approve cho PR #1. Đồng thời approve luôn PR #2 của Backend.",
-        term: `<span class="comment"># Bấm "Review changes" → Chọn "Approve" cho cả PR #1 và PR #2</span>`,
+        title: "Bước 6 — An Approve cả 2 PR",
+        desc: "An kiểm tra lại UI mobile OK → Approve PR #1. Approve luôn PR #2 của Chi. Nhắc: không ai tự merge PR mình (quy ước nhóm).",
+        term: `<span class="comment"># An: Review changes → Approve cho PR #1 và PR #2</span>\n<span class="comment"># Branch protection: đủ 1 approval → nút Merge mở</span>`,
         callouts: ["ok_feedback", "warn"],
-        roles: ["reviewer"]
+        roles: ["reviewer"],
+        flowTag: "GitHub Flow · 4/6 — Approve",
+        gh: { tabs: ["Conversation", "Files changed", "Checks"], active: 0, body: `<span class="gh-badge open">Approved</span> PR #1 & PR #2 sẵn sàng merge` },
+        predict: {
+          q: "GitHub có mặc định chặn bạn tự bấm Merge PR của mình không?",
+          opts: ["Có, luôn chặn Merge", "Không — chỉ chặn tự Approve; tự Merge là quy ước nhóm / rule thêm", "Chỉ chặn trên private repo", "Chỉ Admin mới merge được mọi PR"],
+          ans: 1,
+          why: "Phân biệt luật máy (không tự Approve) vs quy ước nhóm (không tự Merge)."
+        }
       },
       {
-        title: "Bước 7 — Merge PR",
-        desc: "Sau khi đủ approval, Trưởng nhóm bấm \"Merge pull request\" để hợp nhất cả giao diện lẫn API vào main.",
-        term: `<span class="comment"># Trên GitHub: bấm nút xanh "Merge pull request" → "Confirm merge" cho cả 2 PR</span>`,
+        title: "Bước 7 — An Merge PR vào main",
+        desc: "An (Maintain) bấm Merge pull request cho cả hai PR. main nhận UI + API — sẵn sàng deploy.",
+        term: `<span class="comment"># An trên GitHub:</span>\n<span class="comment"># Merge pull request → Confirm merge (PR #1, rồi #2)</span>\n<span class="dim">Cả nhóm sau đó:</span>\n<span class="cmd">git switch main</span>\n<span class="cmd">git pull</span>`,
         callouts: [],
-        roles: ["lead"]
+        roles: ["lead"],
+        flowTag: "GitHub Flow · 5/6 — Merge",
+        toast: "✓ PR #1 & #2 merged vào main!",
+        gh: { tabs: ["Conversation", "Files changed", "Checks"], active: 0, body: `<span class="gh-badge merged">Merged</span> main đã có login-ui + login-api` },
+        predict: {
+          q: "Ai nên bấm Merge theo phân quyền SmartExam?",
+          opts: ["Bình tự merge PR UI của mình", "An (Maintain) merge sau khi đã Approve", "Bất kỳ guest nào", "Bot xóa nhánh rồi merge"],
+          ans: 1,
+          why: "Least privilege: Maintain merge; dev Write không cần Admin."
+        }
       },
       {
-        title: "Bước 8 — Xóa nhánh",
-        desc: "Sau khi merge, xóa các nhánh feature để repo luôn gọn gàng cho vòng làm việc tiếp theo.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git branch -d feature/login-ui</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git branch -d feature/login-api</span>\n\n<span class="comment"># hoặc bấm "Delete branch" ngay dưới mỗi PR đã merge trên GitHub</span>`,
+        title: "Bước 8 — Xóa nhánh (local + remote)",
+        desc: "Nhánh đã merge → xóa cả máy local và trên GitHub để repo gọn. git branch -d chỉ xóa local.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git switch main</span>\n<span class="cmd">git pull</span>\n<span class="cmd">git branch -d feature/login-ui</span>\n<span class="cmd">git push origin --delete feature/login-ui</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git branch -d feature/login-api</span>\n<span class="cmd">git push origin --delete feature/login-api</span>\n<span class="comment"># hoặc nút Delete branch ngay dưới PR đã merge</span>`,
         callouts: [],
-        roles: ["frontend", "backend"]
+        roles: ["frontend", "backend"],
+        flowTag: "GitHub Flow · 6/6 — Deploy & xóa nhánh",
+        toast: "🗑 Nhánh feature đã dọn sạch — sẵn sàng vòng sau!",
+        predict: {
+          q: "git branch -d feature/login-ui xóa nhánh ở đâu?",
+          opts: ["Trên GitHub remote", "Chỉ trên máy local — remote vẫn còn nếu chưa delete", "Xóa cả lịch sử commit main", "Xóa repo"],
+          ans: 1,
+          why: "Phải xóa remote riêng (push --delete hoặc nút Delete branch)."
+        }
       }
     ];
 
     const conflictSteps = [
       {
         title: "Bước 0 — Trạng thái ban đầu",
-        desc: "File config.js đang có dòng: API_BASE_URL trỏ tới \"/api/v1/login\". Cả Frontend Dev và Backend Dev cùng bắt đầu từ đây.",
-        term: `<span class="cmd">git clone https://github.com/lop-cntt/smartexam.git</span>`,
-        callouts: [], code: false, roles: ["frontend", "backend"]
+        desc: "File config.js có API_BASE_URL = \"/api/v1/login\". Bình và Chi cùng bắt đầu từ main.",
+        term: `<span class="cmd">git clone https://github.com/lop-cntt/smartexam.git</span>\n<span class="cmd">cd smartexam</span>`,
+        roles: ["frontend", "backend"],
+        predict: {
+          q: "Merge conflict xảy ra khi nào?",
+          opts: ["Hai người cùng sửa một file bất kỳ", "Hai nhánh sửa cùng một đoạn/dòng rồi Git không tự gộp được", "Chỉ khi xóa nhánh", "Khi clone"],
+          ans: 1,
+          why: "Conflict là chuyện bình thường — không phải Git hỏng."
+        }
       },
       {
         title: "Bước 1 — Tạo nhánh",
-        desc: "Cả hai cùng tách nhánh riêng — nhưng vô tình cùng định sửa một dòng cấu hình API_BASE_URL trong config.js.",
-        term: `<span class="dim">Frontend Dev:</span> <span class="cmd">git checkout -b feature/login-ui</span>\n<span class="dim">Backend Dev:</span> <span class="cmd">git checkout -b feature/login-api</span>`,
-        callouts: [], code: false, roles: ["frontend", "backend"]
+        desc: "Cả hai tách nhánh riêng — nhưng sẽ cùng đụng một dòng cấu hình.",
+        term: `<span class="dim">Bình:</span> <span class="cmd">git switch -c feature/login-ui</span>\n<span class="dim">Chi:</span> <span class="cmd">git switch -c feature/login-api</span>`,
+        roles: ["frontend", "backend"]
       },
       {
         title: "Bước 2 — Commit (cùng sửa 1 dòng)",
-        desc: "Frontend sửa thành \"/api/v2/login\". Backend sửa CHÍNH dòng đó thành \"/api/auth/login\". Đây là mầm mống xung đột.",
-        term: `<span class="dim">Frontend Dev:</span> <span class="cmd">git commit -m "Nang cap goi API len v2"</span>\n<span class="dim">Backend Dev:</span> <span class="cmd">git commit -m "Doi ten endpoint dang nhap"</span>`,
-        callouts: [], code: false, roles: ["frontend", "backend"]
+        desc: "Bình đổi URL → /api/v2/login. Chi đổi CHÍNH dòng đó → /api/auth/login. Mầm xung đột.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git add config.js</span>\n<span class="cmd">git commit -m "feat: nang cap goi API len v2"</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git add config.js</span>\n<span class="cmd">git commit -m "feat: doi endpoint dang nhap sang /auth"</span>`,
+        roles: ["frontend", "backend"]
       },
       {
         title: "Bước 3 — Mở PR song song",
-        desc: "Cả hai đẩy nhánh lên và mở Pull Request gần như cùng lúc.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git push -u origin feature/login-ui</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git push -u origin feature/login-api</span>`,
-        callouts: [], code: false, roles: ["frontend", "backend"]
+        desc: "Cả hai push và mở PR gần như cùng lúc. GitHub chưa báo conflict vì main chưa nhận thay đổi nào.",
+        term: `<span class="dim">Bình:</span> <span class="cmd">git push -u origin feature/login-ui</span>\n<span class="dim">Chi:</span> <span class="cmd">git push -u origin feature/login-api</span>`,
+        roles: ["frontend", "backend"],
+        gh: { tabs: ["Conversation", "Files changed"], active: 0, body: `<span class="gh-badge open">Open</span> PR #1 & PR #2 — chưa conflict trên UI` }
       },
       {
-        title: "Bước 4 — Reviewer Approve PR #1 (Frontend)",
-        desc: "Reviewer xem xét PR #1 của Frontend Dev: kiểm tra thay đổi API_BASE_URL → v2, thấy hợp lý và bấm Approve. Lúc này chưa ai merge nên GitHub chưa phát hiện xung đột.",
-        term: `<span class="comment"># Reviewer xem tab "Files changed" của PR #1</span>\n<span class="comment"># Bấm "Review changes" → chọn "Approve" cho PR #1 (Frontend)</span>`,
-        callouts: [], code: false, roles: ["reviewer"]
+        title: "Bước 4 — An Approve PR #1 (Bình)",
+        desc: "An review PR UI, Approve. Chưa ai merge nên chưa lộ conflict.",
+        term: `<span class="comment"># An: Approve PR #1 (feature/login-ui)</span>`,
+        roles: ["reviewer"]
       },
       {
-        title: "Bước 5 — Reviewer Approve PR #2 & Merge PR #1 thành công",
-        desc: "Reviewer tiếp tục Approve PR #2 của Backend Dev. Trưởng nhóm merge PR #1 (Frontend) trước — thành công, main bây giờ đã chứa API_BASE_URL → /api/v2/login.",
-        term: `<span class="comment"># Reviewer Approve PR #2 (Backend)</span>\n\n<span class="dim">Trưởng nhóm merge PR #1 trước:</span>\n<span class="comment"># Bấm "Merge pull request" cho PR #1 → Confirm merge ✓</span>\n<span class="comment"># main bây giờ có: API_BASE_URL = "/api/v2/login"</span>`,
-        callouts: [], code: false, roles: ["lead", "reviewer"]
+        title: "Bước 5 — Approve PR #2 & Merge PR #1",
+        desc: "An Approve PR #2. An merge PR #1 trước — main giờ có API_BASE_URL = /api/v2/login.",
+        term: `<span class="comment"># An Approve PR #2</span>\n<span class="comment"># An Merge PR #1 → main nhận /api/v2/login</span>`,
+        roles: ["lead", "reviewer"],
+        toast: "✓ PR #1 merged — main đã đổi config"
       },
       {
         title: "Bước 6 — Merge PR #2 → CONFLICT!",
-        desc: "Trưởng nhóm thử merge PR #2 (Backend) — GitHub phát hiện ngay: cùng dòng API_BASE_URL trong config.js đã bị thay đổi bởi cả hai. PR #2 bị chặn không thể merge.",
-        term: `<span class="comment"># Trưởng nhóm bấm merge PR #2 (Backend)...</span>\n<span class="comment"># GitHub báo lỗi:</span>\n<span class="dim">This branch has conflicts that must be resolved</span>`,
+        desc: "An thử merge PR #2: GitHub chặn — cùng dòng API_BASE_URL đã khác với main.",
+        term: `<span class="comment"># An bấm Merge PR #2...</span>\n<span class="dim">This branch has conflicts that must be resolved</span>`,
         callouts: ["danger"],
-        code: `<span class="m1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>\n  API_BASE_URL = "/api/auth/login"; <span class="m2">// code của Backend Dev</span>\n<span class="m2">=======</span>\n  API_BASE_URL = "/api/v2/login";   <span class="m2">// code từ main (đã merge PR #1)</span>\n<span class="m3">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</span>`,
-        roles: ["lead", "backend"]
+        code: `<span class="m1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>\n  API_BASE_URL = "/api/auth/login"; <span class="m2">// nhánh Chi</span>\n<span class="m2">=======</span>\n  API_BASE_URL = "/api/v2/login";   <span class="m2">// main (sau PR #1)</span>\n<span class="m3">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</span>`,
+        roles: ["lead", "backend"],
+        gh: { tabs: ["Conversation", "Files changed"], active: 0, body: `<span class="gh-badge conflict">Conflicts</span> PR #2 không merge được` },
+        predict: {
+          q: "Khi thấy conflicts, bước đúng theo bài giảng là?",
+          opts: ["Xóa repo làm lại", "Kéo main vào nhánh, sửa markers, add + commit + push", "Force-push main", "Bỏ qua và merge --ours mù quáng"],
+          ans: 1,
+          why: "Resolve trên nhánh feature rồi push — PR tự cập nhật."
+        }
       },
       {
         title: "Bước 7 — Giải quyết xung đột & Merge",
-        desc: "Backend Dev mở file config.js, cùng Reviewer gộp cả 2 thay đổi thành /api/v2/auth/login, xóa các dấu conflict của Git, add–commit lại và push. Trưởng nhóm merge thành công.",
-        term: `<span class="cmd">git add config.js</span>\n<span class="cmd">git commit -m "Resolve conflict: gop v2 va endpoint moi"</span>\n<span class="cmd">git push</span>\n<span class="comment"># Sau đó bấm lại "Merge pull request" trên GitHub</span>`,
+        desc: "Chi làm đúng quy trình mục 14.1: cập nhật main → về nhánh → merge main → sửa file (gộp thành /api/v2/auth/login) → xóa markers → add/commit/push. An merge lại.",
+        term: `<span class="dim">Chi resolve (bài giảng 14.1):</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="cmd">git switch feature/login-api</span>\n<span class="cmd">git merge main</span>\n<span class="comment"># mở config.js → chọn/gộp code → xóa &lt;&lt;&lt; === &gt;&gt;&gt;</span>\n<span class="cmd">git add config.js</span>\n<span class="cmd">git commit -m "fix: resolve conflict config API_BASE_URL"</span>\n<span class="cmd">git push</span>\n<span class="comment"># An: Merge pull request PR #2 ✓</span>`,
         callouts: ["ok"],
-        code: `<span class="resolved">API_BASE_URL = "/api/v2/auth/login";</span>   <span class="m2">// đã gộp cả hai thay đổi</span>`,
-        roles: ["backend", "reviewer", "lead"]
+        code: `<span class="resolved">API_BASE_URL = "/api/v2/auth/login";</span>   <span class="m2">// đã gộp cả hai ý đồ</span>`,
+        roles: ["backend", "reviewer", "lead"],
+        toast: "✓ Conflict resolved — PR #2 merged!",
+        predict: {
+          q: "Sau khi sửa xong conflict markers, bước kế là?",
+          opts: ["git push --force main", "git add file + git commit + git push nhánh feature", "Đóng PR và mở issue", "Chỉ restart máy"],
+          ans: 1,
+          why: "Commit xác nhận đã resolve; push để PR xanh trở lại."
+        }
       }
     ];
 
     const syncSteps = [
       {
         title: "Bước 0 — Cả hai tách nhánh từ main",
-        desc: "Frontend Dev và Backend Dev cùng tách nhánh riêng từ main. Cả hai bắt đầu code song song.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git checkout -b feature/login-ui</span>\n\n<span class="dim">Backend Dev:</span>\n<span class="cmd">git checkout -b feature/login-api</span>`,
-        callouts: [], code: false, roles: ["frontend", "backend"]
+        desc: "Bình (UI) và Chi (API) tách nhánh song song từ main sạch.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git switch -c feature/login-ui</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git switch -c feature/login-api</span>`,
+        roles: ["frontend", "backend"]
       },
       {
-        title: "Bước 1 — Backend merge trước",
-        desc: "Backend Dev hoàn thành API xác thực trước, tạo PR, được review và merge vào main. Main bây giờ đã có code API mới nhất.",
-        term: `<span class="dim">Backend Dev:</span>\n<span class="cmd">git push -u origin feature/login-api</span>\n<span class="comment"># PR #2 được Approve → Trưởng nhóm bấm Merge</span>\n<span class="comment"># main bây giờ có API xác thực mới</span>`,
-        callouts: [], code: false, roles: ["backend", "lead"]
+        title: "Bước 1 — Chi (Backend) merge trước",
+        desc: "Chi xong API sớm hơn, PR được An approve và merge. main giờ có API mới.",
+        term: `<span class="dim">Chi:</span>\n<span class="cmd">git push -u origin feature/login-api</span>\n<span class="comment"># PR → Approve → An Merge</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="cmd">git branch -d feature/login-api</span>\n<span class="cmd">git push origin --delete feature/login-api</span>`,
+        roles: ["backend", "lead"],
+        toast: "✓ API đã vào main"
       },
       {
-        title: "Bước 2 — Nhánh Frontend bị \"cũ\" (outdated)",
-        desc: "Frontend Dev vẫn đang code ở nhánh feature/login-ui — nhánh này không có code API mà Backend vừa gộp. Nếu tạo PR ngay, rủi ro conflict rất cao và Frontend chưa thể test tích hợp.",
-        term: `<span class="comment"># Frontend Dev kiểm tra trạng thái nhánh:</span>\n<span class="cmd">git log --oneline main..feature/login-ui</span>\n<span class="comment"># → Nhánh đang THIẾU code API mới nhất từ main</span>`,
-        callouts: ["sync"], code: false, roles: ["frontend"]
+        title: "Bước 2 — Nhánh Bình bị outdated",
+        desc: "Bình vẫn code trên feature/login-ui thiếu API mới. Mở PR ngay = rủi ro conflict + không test tích hợp được.",
+        term: `<span class="comment"># Bình kiểm tra:</span>\n<span class="cmd">git fetch origin</span>\n<span class="cmd">git log --oneline HEAD..origin/main</span>\n<span class="comment"># → có commit API mà nhánh UI chưa có</span>`,
+        callouts: ["sync"],
+        roles: ["frontend"],
+        gh: { tabs: ["Conversation"], active: 0, body: `<span class="gh-badge conflict">⚠ Outdated</span> branch is behind main` },
+        predict: {
+          q: "Thấy nhánh behind main, Bình nên?",
+          opts: ["Ignore và merge PR", "fetch + merge origin/main vào nhánh feature", "Xóa main", "Đổi sang SVN"],
+          ans: 1,
+          why: "Đồng bộ sớm = conflict nhỏ, dễ gỡ."
+        }
       },
       {
         title: "Bước 3 — Fetch & Merge từ main",
-        desc: "Frontend Dev kéo code mới nhất từ remote main về nhánh của mình bằng git fetch + git merge. Đây là thao tác \"đồng bộ\" (sync) mà mỗi ngày nên làm ít nhất 1 lần.",
-        term: `<span class="dim">Frontend Dev (đang ở nhánh feature/login-ui):</span>\n<span class="cmd">git fetch origin</span>\n<span class="cmd">git merge origin/main</span>\n<span class="comment"># Hoặc trên GitHub: bấm nút "Update branch" trong PR</span>`,
-        callouts: [], code: false, roles: ["frontend"]
+        desc: "Bình kéo main mới nhất vào nhánh UI — thao tác nên làm ít nhất mỗi ngày một lần.",
+        term: `<span class="dim">Bình (đang ở feature/login-ui):</span>\n<span class="cmd">git fetch origin</span>\n<span class="cmd">git merge origin/main</span>\n<span class="comment"># hoặc trên PR: nút Update branch</span>`,
+        roles: ["frontend"]
       },
       {
-        title: "Bước 4 — Xử lý conflict nhỏ (nếu có) & tiếp tục code",
-        desc: "Nếu có conflict nhỏ sau khi merge main, Frontend Dev xử lý ngay. Sau đó, nhánh đã có code mới nhất — Frontend có thể test tích hợp (gọi API thật) và tiếp tục code.",
-        term: `<span class="comment"># Nếu có conflict → sửa file → add → commit</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "Merge main: tich hop API moi"</span>\n<span class="comment"># Nhánh đã up-to-date, test tích hợp OK</span>`,
-        callouts: [], code: false, roles: ["frontend"]
+        title: "Bước 4 — Xử lý conflict nhỏ (nếu có) & code tiếp",
+        desc: "Nếu có conflict nhỏ sau merge main → resolve ngay → tiếp tục code và test với API thật.",
+        term: `<span class="comment"># nếu conflict: sửa → add → commit</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "chore: merge main, tich hop API moi"</span>`,
+        roles: ["frontend"]
       },
       {
         title: "Bước 5 — Tạo PR an toàn",
-        desc: "Nhánh feature/login-ui đã chứa cả code mới nhất từ main lẫn code Frontend. Bây giờ tạo PR sẽ an toàn, không bị conflict và dễ review hơn.",
-        term: `<span class="cmd">git push -u origin feature/login-ui</span>\n<span class="comment"># Trên GitHub: bấm "Compare & pull request"</span>\n<span class="comment"># PR hiển thị "✓ This branch has no conflicts with the base branch"</span>`,
-        callouts: ["sync"], code: false, roles: ["frontend"]
+        desc: "Nhánh UI đã up-to-date với main → mở PR: ít conflict, dễ review, test tích hợp OK.",
+        term: `<span class="cmd">git push -u origin feature/login-ui</span>\n<span class="comment"># Compare & pull request</span>\n<span class="comment"># ✓ This branch has no conflicts with the base branch</span>`,
+        callouts: ["sync"],
+        roles: ["frontend"],
+        gh: { tabs: ["Conversation"], active: 0, body: `<span class="gh-badge open">Open</span> PR #1 · <span class="gh-badge open">✓ Up to date</span>` },
+        toast: "✓ PR an toàn — sẵn sàng review"
       }
     ];
 
     const revertSteps = [
       {
         title: "Bước 0 — PR đã merge vào main",
-        desc: "Frontend Dev đã tạo PR cho giao diện Login, được Reviewer approve và Trưởng nhóm đã merge vào main. Mọi thứ có vẻ ổn...",
-        term: `<span class="comment"># PR #1 (feature/login-ui) đã được merge vào main</span>\n<span class="comment"># Trạng thái: Merged ✓</span>`,
-        callouts: [], code: false, roles: ["frontend", "lead"]
+        desc: "PR UI của Bình đã được An merge. main trông ổn trên giấy...",
+        term: `<span class="comment"># PR #1 feature/login-ui → Merged ✓</span>`,
+        roles: ["frontend", "lead"]
       },
       {
         title: "Bước 1 — Phát hiện lỗi nghiêm trọng!",
-        desc: "Sau khi deploy (hoặc khi kéo main về chạy thử), cả nhóm phát hiện: trang chủ SmartExam bị sập hoàn toàn! CSS bị hỏng, nút bấm biến mất, server trả lỗi 500.",
-        term: `<span class="dim">Trưởng nhóm:</span>\n<span class="cmd">git pull origin main</span>\n<span class="comment"># Chạy thử → Trang chủ sập! CSS bay hết!</span>\n<span class="comment"># Nhóm hoảng loạn 😱</span>`,
-        callouts: ["revert"], code: false, roles: ["frontend", "backend", "reviewer", "lead"]
+        desc: "Sau deploy (Dũng/CI), trang chủ SmartExam sập: CSS hỏng, lỗi 500. Ưu tiên cứu main, không sửa vội trên main.",
+        term: `<span class="dim">An / Dũng:</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="comment"># Chạy thử → trang chủ sập 😱</span>`,
+        callouts: ["revert"],
+        roles: ["frontend", "backend", "reviewer", "lead"],
+        predict: {
+          q: "main vừa ship bug nặng — phản xạ đúng?",
+          opts: ["Sửa trực tiếp trên main không PR", "Revert PR để khôi phục main, rồi hotfix qua nhánh mới", "Xóa toàn bộ repo", "Tắt internet"],
+          ans: 1,
+          why: "main luôn deploy được — Revert nhanh, lịch sử rõ, sửa sau cho đúng."
+        }
       },
       {
         title: "Bước 2 — Mở Revert PR",
-        desc: "Thay vì sửa vội vàng, Trưởng nhóm vào lại PR đã đóng trên GitHub, tìm nút \"Revert\". GitHub sẽ tự động tạo một PR mới có chức năng đảo ngược toàn bộ thay đổi.",
-        term: `<span class="comment"># Trên GitHub:</span>\n<span class="comment"># 1. Mở PR #1 đã đóng (tab "Closed")</span>\n<span class="comment"># 2. Cuộn xuống → bấm nút "Revert"</span>\n<span class="comment"># 3. GitHub tạo PR mới: "Revert PR #1"</span>`,
-        callouts: [], code: false, roles: ["lead"]
+        desc: "An mở PR đã merge → nút Revert. GitHub tạo PR đảo ngược thay đổi.",
+        term: `<span class="comment"># GitHub: PR #1 (Closed) → Revert</span>\n<span class="comment"># → tạo PR "Revert PR #1"</span>`,
+        roles: ["lead"]
       },
       {
-        title: "Bước 3 — Merge Revert PR → Cứu main",
-        desc: "Trưởng nhóm merge Revert PR ngay lập tức (có thể bỏ qua review trong trường hợp khẩn cấp). Main được khôi phục về trạng thái trước khi lỗi xảy ra.",
-        term: `<span class="comment"># Bấm "Merge pull request" cho Revert PR</span>\n<span class="comment"># main bây giờ đã sạch — trang chủ hoạt động lại bình thường</span>\n<span class="cmd">git pull origin main</span>\n<span class="comment"># Kiểm tra → Trang chủ đã khôi phục ✓</span>`,
-        callouts: ["revert_ok"], code: false, roles: ["lead"]
+        title: "Bước 3 — Merge Revert → cứu main",
+        desc: "Merge Revert PR (khẩn cấp có thể rút gọn review). main trở lại trạng thái trước bug.",
+        term: `<span class="comment"># Merge Revert PR → Confirm</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="comment"># Trang chủ sống lại ✓</span>`,
+        callouts: ["revert_ok"],
+        roles: ["lead"],
+        toast: "✓ main đã khôi phục!"
       },
       {
-        title: "Bước 4 — Tạo nhánh sửa lỗi",
-        desc: "Bây giờ tình huống đã bình tĩnh. Frontend Dev tạo nhánh mới fix/login-ui-hotfix để sửa lỗi CSS đúng cách, không vội vàng.",
-        term: `<span class="dim">Frontend Dev:</span>\n<span class="cmd">git checkout main</span>\n<span class="cmd">git pull origin main</span>\n<span class="cmd">git checkout -b fix/login-ui-hotfix</span>\n<span class="comment"># Bắt đầu sửa lỗi CSS cẩn thận...</span>`,
-        callouts: [], code: false, roles: ["frontend"]
+        title: "Bước 4 — Tạo nhánh hotfix",
+        desc: "Bình tạo nhánh fix từ main đã sạch, sửa CSS cẩn thận — không panic-commit.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git switch main</span>\n<span class="cmd">git pull</span>\n<span class="cmd">git switch -c fix/login-ui-hotfix</span>`,
+        roles: ["frontend"]
       },
       {
-        title: "Bước 5 — Sửa xong & Merge lại an toàn",
-        desc: "Frontend Dev sửa xong, tạo PR mới, được review kỹ lưỡng hơn lần trước, và merge an toàn vào main.",
-        term: `<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "Fix: sua lai CSS login, test ky tren mobile"</span>\n<span class="cmd">git push -u origin fix/login-ui-hotfix</span>\n<span class="comment"># Tạo PR → Review kỹ → Approve → Merge ✓</span>`,
-        callouts: ["revert_ok"], code: false, roles: ["frontend", "reviewer", "lead"]
+        title: "Bước 5 — Sửa xong & Merge an toàn",
+        desc: "fix: ... → push → PR → An review kỹ hơn → merge. Code lỗi cũ vẫn trong lịch sử, không mất.",
+        term: `<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "fix: sua CSS login, test ky tren mobile"</span>\n<span class="cmd">git push -u origin fix/login-ui-hotfix</span>\n<span class="comment"># PR → review → Approve → Merge ✓</span>`,
+        callouts: ["revert_ok"],
+        roles: ["frontend", "reviewer", "lead"],
+        toast: "✓ Hotfix đã ship an toàn"
       }
     ];
 
     const issuesSteps = [
       {
         title: "Bước 0 — Tạo Issue trên GitHub",
-        desc: "Trưởng nhóm tạo một Issue mô tả task cần làm: \"#4 — Thiết kế cơ sở dữ liệu cho module bài thi\". Issue giúp cả nhóm biết task nào cần làm, ai chịu trách nhiệm.",
-        term: `<span class="comment"># Trên GitHub: Tab "Issues" → "New issue"</span>\n<span class="comment"># Title: "Thiết kế CSDL cho module bài thi"</span>\n<span class="comment"># Description: Tạo bảng exams, questions, answers...</span>\n<span class="comment"># Label: "database", "priority: high"</span>`,
-        callouts: [], code: false, roles: ["lead"]
+        desc: "An tạo Issue #4: thiết kế CSDL module bài thi. Issue = việc có chủ, nhãn, theo dõi.",
+        term: `<span class="comment"># Issues → New issue</span>\n<span class="comment"># Title: Thiết kế CSDL module bài thi</span>\n<span class="comment"># Labels: database, priority: high</span>`,
+        roles: ["lead"],
+        gh: { tabs: ["Code", "Issues", "Projects"], active: 1, body: `<span class="gh-badge open">Open</span> <b>#4</b> Thiết kế CSDL bài thi<br>Project board: Todo → In progress → Done` }
       },
       {
         title: "Bước 1 — Giao việc (Assign)",
-        desc: "Trưởng nhóm giao Issue #4 cho Backend Dev bằng cách chọn \"Assignees\" ở cột bên phải. Backend Dev sẽ nhận được email/thông báo.",
-        term: `<span class="comment"># Trên GitHub: Mở Issue #4</span>\n<span class="comment"># Cột phải → "Assignees" → chọn Backend Dev</span>\n<span class="comment"># Backend Dev nhận notification trên GitHub</span>`,
-        callouts: [], code: false, roles: ["lead", "backend"]
+        desc: "An assign Issue #4 cho Chi (Backend). Chi nhận notification.",
+        term: `<span class="comment"># Issue #4 → Assignees → Chi</span>`,
+        roles: ["lead", "backend"]
       },
       {
-        title: "Bước 2 — Bắt đầu code & Push sớm",
-        desc: "Backend Dev tạo nhánh feature/db-schema, viết được vài dòng code đầu tiên (schema bảng exams), rồi push lên GitHub sớm — dù chưa xong.",
-        term: `<span class="dim">Backend Dev:</span>\n<span class="cmd">git checkout -b feature/db-schema</span>\n<span class="comment"># Viết schema ban đầu cho bảng exams...</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "WIP: tao schema bang exams (dang lam do)"</span>\n<span class="cmd">git push -u origin feature/db-schema</span>`,
-        callouts: [], code: false, roles: ["backend"]
+        title: "Bước 2 — Code & Push sớm",
+        desc: "Chi tạo nhánh, commit WIP sớm — không nhốt code trên máy 1 tuần.",
+        term: `<span class="dim">Chi:</span>\n<span class="cmd">git switch -c feature/db-schema</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "wip: schema bang exams (dang lam do)"</span>\n<span class="cmd">git push -u origin feature/db-schema</span>`,
+        roles: ["backend"]
       },
       {
         title: "Bước 3 — Mở Draft Pull Request",
-        desc: "Backend Dev tạo Draft PR trên GitHub và liên kết với Issue #4 bằng cách ghi \"Closes #4\" trong mô tả. Draft PR báo hiệu cho cả nhóm: \"Tôi đang làm dở, đừng duyệt vội, chỉ vào góp ý thôi\".",
-        term: `<span class="comment"># Trên GitHub: bấm "Compare & pull request"</span>\n<span class="comment"># Bấm mũi tên ▼ bên cạnh nút "Create pull request"</span>\n<span class="comment">#   → Chọn "Create draft pull request"</span>\n<span class="comment"># Description: "Closes #4 — đang thiết kế CSDL bài thi"</span>`,
-        callouts: ["draft"], code: false, roles: ["backend"]
+        desc: "Chi mở Draft PR + ghi Closes #4. Draft = đang làm dở, xin góp ý, chưa Approve/Merge.",
+        term: `<span class="comment"># Compare & pull request → Create draft pull request</span>\n<span class="comment"># Description: Closes #4 — đang thiết kế CSDL bài thi</span>`,
+        callouts: ["draft"],
+        roles: ["backend"],
+        gh: { tabs: ["Conversation", "Files changed"], active: 0, body: `<span class="gh-badge draft">Draft</span> PR · Closes #4<br>Reviewer chưa Approve được Draft` },
+        predict: {
+          q: "Closes #4 trong mô tả PR làm gì?",
+          opts: ["Chỉ trang trí", "Khi PR merge, Issue #4 tự đóng", "Xóa issue ngay khi mở PR", "Gán Admin cho assignee"],
+          ans: 1,
+          why: "Liên kết PR ↔ Issue — khi merge, việc được đóng đúng."
+        }
       },
       {
-        title: "Bước 4 — Nhận góp ý sớm (Early Feedback)",
-        desc: "Reviewer mở PR, xem code và để lại comment góp ý hướng tiếp cận (VD: \"Nên thêm bảng exam_sessions để lưu phiên thi\"). Backend Dev tiếp tục push thêm commits.",
-        term: `<span class="comment"># Reviewer vào tab "Files changed" và comment:</span>\n<span class="comment"># "Nên thêm bảng exam_sessions để lưu phiên thi"</span>\n\n<span class="dim">Backend Dev tiếp tục code:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "Them bang exam_sessions theo gop y"</span>\n<span class="cmd">git push</span>`,
-        callouts: ["draft"], code: false, roles: ["reviewer", "backend"]
+        title: "Bước 4 — Góp ý sớm (Early Feedback)",
+        desc: "An comment: nên thêm bảng exam_sessions. Chi push commit tiếp — Draft vẫn là draft.",
+        term: `<span class="comment"># An comment: thêm exam_sessions</span>\n<span class="dim">Chi:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "feat: them bang exam_sessions theo gop y"</span>\n<span class="cmd">git push</span>`,
+        callouts: ["draft"],
+        roles: ["reviewer", "backend"]
       },
       {
-        title: "Bước 5 — Đánh dấu Ready & Merge",
-        desc: "Khi code đã hoàn chỉnh, Backend Dev bấm \"Ready for review\" để chuyển Draft thành PR chính thức. Reviewer approve, Trưởng nhóm merge, và Issue #4 tự động đóng.",
-        term: `<span class="comment"># Backend Dev bấm "Ready for review" trên PR</span>\n<span class="comment"># Reviewer: "Review changes" → "Approve" ✓</span>\n<span class="comment"># Trưởng nhóm: "Merge pull request" → "Confirm merge"</span>\n<span class="comment"># Issue #4 tự động chuyển sang "Closed" ✓</span>`,
-        callouts: [], code: false, roles: ["backend", "reviewer", "lead"]
+        title: "Bước 5 — Ready for review & Merge",
+        desc: "Chi bấm Ready for review → An Approve → An Merge → Issue #4 tự Closed. Kéo thẻ Project → Done.",
+        term: `<span class="comment"># Ready for review → Approve → Merge</span>\n<span class="comment"># Issue #4 → Closed (Closes #4)</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="cmd">git branch -d feature/db-schema</span>\n<span class="cmd">git push origin --delete feature/db-schema</span>`,
+        roles: ["backend", "reviewer", "lead"],
+        toast: "✓ Issue #4 closed · schema merged",
+        gh: { tabs: ["Conversation"], active: 0, body: `<span class="gh-badge merged">Merged</span> · Issue #4 Closed · Project: Done` }
       }
     ];
 
     const endToEndSteps = [
       {
-        title: "Bước 0 — Lên kế hoạch & Giao task",
-        desc: "Trưởng nhóm tạo Issue #15 trên GitHub mô tả tính năng RBAC (Role-Based Access Control). Task được chia cho cả FE lẫn BE: FE làm giao diện phân quyền, BE làm API kiểm tra quyền.",
-        term: `<span class=\"comment\"># Trên GitHub: Tab \"Issues\" → \"New issue\"</span>\n<span class=\"comment\"># Title: \"#15 — Xây dựng hệ thống RBAC\"</span>\n<span class=\"comment\"># Assign: Frontend Dev → UI phân quyền</span>\n<span class=\"comment\"># Assign: Backend Dev → API kiểm tra quyền</span>\n<span class=\"comment\"># Label: \"feature\", \"priority: high\"</span>`,
-        callouts: [],
-        roles: ["lead"]
+        title: "Bước 0 — Lên kế hoạch & giao task",
+        desc: "An tạo Issue #15: module phiên thi (exam-session). Bình: UI phiên thi. Chi: API phiên thi. Dũng: theo dõi CI.",
+        term: `<span class="comment"># Issue #15 — Module phiên thi SmartExam</span>\n<span class="comment"># Assign Bình (UI) · Chi (API)</span>\n<span class="comment"># Label: feature, priority: high</span>`,
+        roles: ["lead"],
+        flowTag: "E2E · Kế hoạch",
+        predict: {
+          q: "Vì sao repo lab nên Public trên org Free?",
+          opts: ["Cho đẹp", "Branch protection miễn phí trên Public; private Free không bật được", "Public thì không cần review", "GitHub bắt buộc"],
+          ans: 1,
+          why: "Cảnh báo 12.3 bài giảng — quên là lab giữa lớp kẹt."
+        }
       },
       {
-        title: "Bước 1 — Cả hai tách nhánh song song",
-        desc: "Frontend Dev và Backend Dev cùng lúc tách nhánh từ main. FE tạo feature/rbac-ui để làm giao diện, BE tạo feature/rbac-api để làm API. Hai nhánh phát triển độc lập, song song.",
-        term: `<span class=\"dim\">Frontend Dev:</span>\n<span class=\"cmd\">git checkout -b feature/rbac-ui</span>\n\n<span class=\"dim\">Backend Dev:</span>\n<span class=\"cmd\">git checkout -b feature/rbac-api</span>`,
-        callouts: [],
-        roles: ["frontend", "backend"]
+        title: "Bước 1 — Tách nhánh song song",
+        desc: "Bình: feature/exam-session-ui. Chi: feature/exam-session-api. Làm song song, không đụng main.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git switch -c feature/exam-session-ui</span>\n\n<span class="dim">Chi:</span>\n<span class="cmd">git switch -c feature/exam-session-api</span>`,
+        roles: ["frontend", "backend"],
+        flowTag: "E2E · Song song"
       },
       {
-        title: "Bước 2 — Chốt chuẩn API (Mock API & Draft PR)",
-        desc: "BE viết Mock API trả dữ liệu giả (hardcode danh sách quyền) và mở Draft PR để chia sẻ schema API sớm cho FE. FE có thể bắt đầu code giao diện dựa trên contract Mock API này mà không cần chờ.",
-        term: `<span class=\"dim\">Backend Dev:</span>\n<span class=\"cmd\">git add .</span>\n<span class=\"cmd\">git commit -m \"Mock API: tra ve danh sach quyen (hardcode)\"</span>\n<span class=\"cmd\">git push -u origin feature/rbac-api</span>\n\n<span class=\"comment\"># Trên GitHub: bấm \"Create draft pull request\"</span>\n<span class=\"comment\"># FE xem Draft PR để biết schema response</span>`,
+        title: "Bước 2 — Chốt Mock API bằng Draft PR",
+        desc: "Chi commit Mock API (hardcode) + Draft PR để Bình biết contract response — code UI không chờ API thật.",
+        term: `<span class="dim">Chi:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "feat: mock API phien thi (hardcode)"</span>\n<span class="cmd">git push -u origin feature/exam-session-api</span>\n<span class="comment"># Create draft pull request · Closes #15 (partial)</span>`,
         callouts: ["e2e_draft"],
-        roles: ["frontend", "backend"]
+        roles: ["frontend", "backend"],
+        flowTag: "E2E · Contract sớm",
+        gh: { tabs: ["Conversation", "Files changed"], active: 0, body: `<span class="gh-badge draft">Draft</span> Mock API schema cho FE` }
       },
       {
-        title: "Bước 3 — BE hoàn thiện API thật & Merge",
-        desc: "Backend Dev thay Mock API bằng logic thật (query database, kiểm tra JWT token). PR được chuyển từ Draft sang Ready. Reviewer approve, Trưởng nhóm merge vào main.",
-        term: `<span class=\"dim\">Backend Dev:</span>\n<span class=\"cmd\">git add .</span>\n<span class=\"cmd\">git commit -m \"RBAC API: kiem tra quyen tu DB + JWT\"</span>\n<span class=\"cmd\">git push</span>\n\n<span class=\"comment\"># Bấm \"Ready for review\" → Reviewer Approve</span>\n<span class=\"comment\"># Trưởng nhóm: \"Merge pull request\" → Confirm</span>`,
-        callouts: [],
-        roles: ["backend", "reviewer", "lead"]
+        title: "Bước 3 — Chi hoàn thiện API thật & Merge",
+        desc: "Chi thay mock bằng logic DB + JWT. Ready for review → An Approve → Merge vào main.",
+        term: `<span class="dim">Chi:</span>\n<span class="cmd">git add .</span>\n<span class="cmd">git commit -m "feat: API phien thi that (DB + JWT)"</span>\n<span class="cmd">git push</span>\n<span class="comment"># Ready → Approve → An Merge</span>`,
+        roles: ["backend", "reviewer", "lead"],
+        toast: "✓ API phiên thi đã vào main"
       },
       {
-        title: "Bước 4 — FE đồng bộ (Sync) API thật từ main",
-        desc: "Nhánh FE đang dùng Mock API cũ. Sau khi BE merge, FE cần kéo code API thật từ main về nhánh của mình để tích hợp và test với endpoint thật.",
-        term: `<span class=\"dim\">Frontend Dev (đang ở nhánh feature/rbac-ui):</span>\n<span class=\"cmd\">git fetch origin</span>\n<span class=\"cmd\">git merge origin/main</span>\n<span class=\"comment\"># Nhánh FE giờ đã có API thật từ BE</span>\n<span class=\"comment\"># FE đổi endpoint từ Mock sang API thật và test</span>`,
+        title: "Bước 4 — Bình sync API thật từ main",
+        desc: "Nhánh UI đang dùng mock. Bình merge origin/main để tích hợp endpoint thật.",
+        term: `<span class="dim">Bình (feature/exam-session-ui):</span>\n<span class="cmd">git fetch origin</span>\n<span class="cmd">git merge origin/main</span>\n<span class="comment"># đổi client từ mock → API thật, test</span>`,
         callouts: ["e2e_sync"],
         roles: ["frontend"]
       },
       {
-        title: "Bước 5 — FE mở PR, Reviewer phát hiện lỗi 401",
-        desc: "FE code xong UI phân quyền, mở PR. Reviewer kéo code về test và phát hiện: khi API trả lỗi 401 (hết hạn token), UI không redirect về trang đăng nhập mà chỉ hiện trang trắng. Reviewer chọn Request Changes.",
-        term: `<span class=\"dim\">Frontend Dev:</span>\n<span class=\"cmd\">git push -u origin feature/rbac-ui</span>\n<span class=\"comment\"># Trên GitHub: bấm \"Compare & pull request\"</span>\n\n<span class=\"comment\"># Reviewer kéo code về test:</span>\n<span class=\"cmd\">git fetch origin</span>\n<span class=\"cmd\">git checkout feature/rbac-ui</span>\n<span class=\"comment\"># Test → Phát hiện lỗi 401 không redirect!</span>`,
+        title: "Bước 5 — Bình mở PR — An bắt lỗi 401",
+        desc: "An kéo nhánh test: khi API 401 (hết hạn token), UI trắng, không redirect /login. Request changes.",
+        term: `<span class="dim">Bình:</span>\n<span class="cmd">git push -u origin feature/exam-session-ui</span>\n<span class="comment"># mở PR</span>\n\n<span class="dim">An test:</span>\n<span class="cmd">git fetch origin</span>\n<span class="cmd">git switch feature/exam-session-ui</span>\n<span class="comment"># → 401 không redirect!</span>`,
         callouts: ["e2e_danger"],
-        code: `<span class=\"m1\">Reviewer requested changes on PR:</span>\n<span class=\"comment\">\"Khi API trả 401 Unauthorized, trang bị trắng.\n  Expected: redirect về /login kèm thông báo\n  \"Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.\"\n  Actual: màn hình trắng, không có feedback.\"</span>`,
-        roles: ["reviewer"]
+        code: `<span class="m1">An requested changes:</span>\n<span class="comment">"401 → phải redirect /login + thông báo hết phiên.\\nActual: màn hình trắng."</span>`,
+        roles: ["reviewer"],
+        gh: { tabs: ["Files changed"], active: 0, body: `<span class="gh-badge changes">Changes requested</span> thiếu xử lý 401` },
+        predict: {
+          q: "An request changes — Bình làm gì?",
+          opts: ["Mở PR mới từ đầu", "Sửa trên cùng nhánh, commit fix:, push — PR tự cập nhật", "Merge bất chấp", "Revert main"],
+          ans: 1,
+          why: "Cùng PR theo dõi vòng review — như luồng chuẩn."
+        }
       },
       {
-        title: "Bước 6 — FE fix lỗi logic & Push lại",
-        desc: "Frontend Dev sửa logic xử lý response: thêm kiểm tra HTTP 401 và redirect về /login kèm thông báo. Commit sửa lỗi và push lại — PR trên GitHub tự cập nhật.",
-        term: `<span class=\"comment\"># Sửa file api-handler.js: thêm kiểm tra 401...</span>\n<span class=\"cmd\">git add api-handler.js</span>\n<span class=\"cmd\">git commit -m \"Fix: redirect ve /login khi API tra 401\"</span>\n<span class=\"cmd\">git push</span>\n<span class=\"comment\"># PR tự động nhận commit mới</span>`,
-        callouts: [],
+        title: "Bước 6 — Bình fix logic 401 & push",
+        desc: "Bình thêm xử lý HTTP 401 → redirect /login + thông báo. fix: commit + push.",
+        term: `<span class="comment"># sửa api-handler.js</span>\n<span class="cmd">git add api-handler.js</span>\n<span class="cmd">git commit -m "fix: redirect /login khi API tra 401"</span>\n<span class="cmd">git push</span>`,
         roles: ["frontend"]
       },
       {
-        title: "Bước 7 — Reviewer test lại & Approve",
-        desc: "Reviewer kéo code mới về, test lại luồng 401: lần này khi token hết hạn, UI tự redirect về /login và hiện thông báo rõ ràng. Reviewer bấm Approve.",
-        term: `<span class=\"comment\"># Reviewer kéo code mới:</span>\n<span class=\"cmd\">git pull origin feature/rbac-ui</span>\n<span class=\"comment\"># Test lại → 401 redirect đúng về /login ✓</span>\n<span class=\"comment\"># Bấm \"Review changes\" → \"Approve\" ✓</span>`,
+        title: "Bước 7 — An test lại & Approve",
+        desc: "An pull code mới, test 401 → redirect đúng. Approve.",
+        term: `<span class="cmd">git pull origin feature/exam-session-ui</span>\n<span class="comment"># Test 401 → /login ✓</span>\n<span class="comment"># Review changes → Approve</span>`,
         callouts: ["e2e_ok"],
         roles: ["reviewer"]
       },
       {
-        title: "Bước 8 — Merge FE & CI/CD Build",
-        desc: "Trưởng nhóm merge PR của FE vào main. Hệ thống CI/CD tự động chạy build và deploy. Cả hai nhánh feature/rbac-ui và feature/rbac-api được xóa để giữ repo gọn gàng.",
-        term: `<span class=\"comment\"># Trưởng nhóm: \"Merge pull request\" → \"Confirm merge\"</span>\n<span class=\"comment\"># 🚀 CI/CD pipeline tự động chạy: build → test → deploy</span>\n\n<span class=\"comment\"># Xóa nhánh đã merge:</span>\n<span class=\"cmd\">git branch -d feature/rbac-ui</span>\n<span class=\"cmd\">git branch -d feature/rbac-api</span>\n<span class=\"comment\"># Hoặc bấm \"Delete branch\" trên GitHub</span>`,
-        callouts: [],
-        roles: ["lead"]
+        title: "Bước 8 — Merge FE & CI/CD (Dũng)",
+        desc: "An merge PR UI. Pipeline CI/CD của Dũng: build → test → deploy. Xóa nhánh local + remote.",
+        term: `<span class="comment"># An: Merge pull request</span>\n<span class="comment"># 🚀 Dũng/CI: build → test → deploy SmartExam</span>\n<span class="cmd">git switch main && git pull</span>\n<span class="cmd">git branch -d feature/exam-session-ui</span>\n<span class="cmd">git push origin --delete feature/exam-session-ui</span>`,
+        roles: ["lead"],
+        flowTag: "E2E · Deploy",
+        toast: "🚀 CI/CD xanh — phiên thi đã ship!",
+        gh: { tabs: ["Checks"], active: 0, body: `<span class="gh-badge open">✓ build</span> <span class="gh-badge open">✓ test</span> <span class="gh-badge merged">deployed</span>` }
       }
     ];
 
-    /* ===== TAB CONFIG ===== */
     const allCalloutIds = [
       'calloutWarn', 'calloutDanger', 'calloutOk',
       'calloutDangerFeedback', 'calloutOkFeedback',
       'calloutSync', 'calloutRevert', 'calloutRevertOk', 'calloutDraft',
-      'calloutE2eDanger', 'calloutE2eOk', 'calloutE2eSync', 'calloutE2eDraft'
+      'calloutE2eDanger', 'calloutE2eOk', 'calloutE2eSync', 'calloutE2eDraft',
+      'calloutPublic', 'calloutPrivilege'
     ];
     const calloutMap = {};
     allCalloutIds.forEach(id => { calloutMap[id] = document.getElementById(id); });
 
     const calloutKeyToId = {
-      'warn': 'calloutWarn',
-      'danger': 'calloutDanger',
-      'ok': 'calloutOk',
-      'danger_feedback': 'calloutDangerFeedback',
-      'ok_feedback': 'calloutOkFeedback',
-      'sync': 'calloutSync',
-      'revert': 'calloutRevert',
-      'revert_ok': 'calloutRevertOk',
-      'draft': 'calloutDraft',
-      'e2e_danger': 'calloutE2eDanger',
-      'e2e_ok': 'calloutE2eOk',
-      'e2e_sync': 'calloutE2eSync',
-      'e2e_draft': 'calloutE2eDraft',
+      warn: 'calloutWarn', danger: 'calloutDanger', ok: 'calloutOk',
+      danger_feedback: 'calloutDangerFeedback', ok_feedback: 'calloutOkFeedback',
+      sync: 'calloutSync', revert: 'calloutRevert', revert_ok: 'calloutRevertOk',
+      draft: 'calloutDraft', e2e_danger: 'calloutE2eDanger', e2e_ok: 'calloutE2eOk',
+      e2e_sync: 'calloutE2eSync', e2e_draft: 'calloutE2eDraft',
+      public: 'calloutPublic', privilege: 'calloutPrivilege'
     };
 
     const tabConfig = {
-      flow: { title: 'Luồng chuẩn', steps: flowSteps, attr: 'data-step', svg: document.getElementById('svgFlow'), deleteBranches: 8 },
-      conflict: { title: 'Merge Conflict', steps: conflictSteps, attr: 'data-cstep', svg: document.getElementById('svgConflict'), deleteBranches: false },
-      sync: { title: 'Đồng bộ code', steps: syncSteps, attr: 'data-sstep', svg: document.getElementById('svgSync'), deleteBranches: false },
-      revert: { title: 'Revert PR', steps: revertSteps, attr: 'data-rstep', svg: document.getElementById('svgRevert'), deleteBranches: false },
-      issues: { title: 'Issues & Draft PR', steps: issuesSteps, attr: 'data-istep', svg: document.getElementById('svgIssues'), deleteBranches: false },
-      endtoend: { title: 'End-to-End', steps: endToEndSteps, attr: 'data-estep', svg: document.getElementById('svgEndToEnd'), deleteBranches: 8 },
+      flow: { title: 'Luồng chuẩn', steps: flowSteps, attr: 'data-step', svg: document.getElementById('svgFlow') },
+      conflict: { title: 'Merge Conflict', steps: conflictSteps, attr: 'data-cstep', svg: document.getElementById('svgConflict') },
+      sync: { title: 'Đồng bộ code', steps: syncSteps, attr: 'data-sstep', svg: document.getElementById('svgSync') },
+      revert: { title: 'Revert PR', steps: revertSteps, attr: 'data-rstep', svg: document.getElementById('svgRevert') },
+      issues: { title: 'Issues & Draft PR', steps: issuesSteps, attr: 'data-istep', svg: document.getElementById('svgIssues') },
+      endtoend: { title: 'End-to-End', steps: endToEndSteps, attr: 'data-estep', svg: document.getElementById('svgEndToEnd') },
     };
 
     const quizData = {
       flow: [
-        { q: "Tại sao cần tạo nhánh riêng thay vì code trực tiếp trên main?", opts: ["Vì Git bắt buộc phải tạo nhánh", "Để tránh ảnh hưởng code người khác, dễ review và rollback", "Vì main không cho phép commit", "Chỉ là thói quen, không bắt buộc"], ans: 1 },
-        { q: "Khi Reviewer chọn 'Request Changes', dev có cần tạo PR mới không?", opts: ["Có, phải tạo PR mới hoàn toàn", "Không, chỉ cần push thêm commit vào nhánh cũ — PR tự cập nhật", "Có, và phải xóa nhánh cũ", "Tùy từng trường hợp"], ans: 1 },
-        { q: "Ai là người bấm 'Merge pull request'?", opts: ["Người tạo PR", "Bất kỳ ai trong nhóm", "Trưởng nhóm (Maintainer/Admin)", "Reviewer"], ans: 2 }
+        { q: "Tại sao cần tạo nhánh riêng thay vì code trực tiếp trên main?", opts: ["Vì Git bắt buộc phải tạo nhánh", "Để tránh ảnh hưởng code người khác, dễ review và rollback", "Vì main không cho phép commit", "Chỉ là thói quen"], ans: 1 },
+        { q: "Khi An chọn Request Changes, Bình có cần tạo PR mới không?", opts: ["Có, PR mới hoàn toàn", "Không — push thêm commit vào nhánh cũ, PR tự cập nhật", "Có và phải xóa nhánh cũ", "Tùy hứng"], ans: 1 },
+        { q: "Bạn mở PR, đồng đội Approve, bạn tự bấm Merge. GitHub có chặn không? Có vi phạm quy ước nhóm không?", opts: ["Chặn Merge; không vi phạm quy ước", "Không chặn Merge mặc định; vẫn có thể vi phạm quy ước nhóm", "Chặn cả hai", "Không chặn và không bao giờ sai"], ans: 1 },
+        { q: "Lệnh tạo nhánh theo bài giảng là?", opts: ["git checkout main -f", "git switch -c feature/ten", "git push --all", "git init twice"], ans: 1 }
       ],
       conflict: [
-        { q: "Merge conflict xảy ra khi nào?", opts: ["Khi 2 người cùng sửa 1 file", "Khi 2 người cùng sửa cùng một dòng trong cùng 1 file", "Khi push code lên remote", "Khi tạo nhánh mới"], ans: 1 },
-        { q: "Ai chịu trách nhiệm giải quyết conflict?", opts: ["GitHub tự động giải quyết", "Trưởng nhóm luôn giải quyết", "Người tạo PR bị conflict (có thể nhờ đồng đội)", "Reviewer"], ans: 2 }
+        { q: "Merge conflict xảy ra khi nào?", opts: ["Hai người cùng sửa 1 file", "Hai nhánh sửa cùng một đoạn rồi Git không tự quyết", "Khi push", "Khi tạo nhánh"], ans: 1 },
+        { q: "Thứ tự resolve theo bài giảng?", opts: ["force-push main", "switch main && pull → switch feature → merge main → sửa markers → add/commit/push", "Xóa .git", "Chỉ bấm Resolve trên web mà không hiểu markers"], ans: 1 },
+        { q: "Ai thường resolve conflict trên PR của mình?", opts: ["GitHub bot", "Người sở hữu nhánh/PR (có thể nhờ đồng đội)", "Chỉ Owner", "Không ai — bỏ PR"], ans: 1 }
       ],
       sync: [
-        { q: "Khi nào cần chạy 'git fetch + git merge origin/main'?", opts: ["Chỉ khi có conflict", "Mỗi ngày trước khi code, hoặc khi main đã có code mới", "Sau khi merge PR", "Không bao giờ cần"], ans: 1 },
-        { q: "Nếu không sync trước khi tạo PR thì rủi ro gì?", opts: ["Không có rủi ro gì", "Dễ bị conflict, code không tương thích với code mới", "PR sẽ bị GitHub tự động từ chối", "Nhánh sẽ bị xóa"], ans: 1 }
+        { q: "Khi nào nên git fetch + merge origin/main?", opts: ["Chỉ khi conflict", "Mỗi ngày / khi main đã có code mới, trước khi PR", "Sau khi xóa repo", "Không bao giờ"], ans: 1 },
+        { q: "Không sync trước PR thì rủi ro gì?", opts: ["Không sao", "Dễ conflict, code không tương thích main mới", "GitHub xóa account", "Mất quyền Write"], ans: 1 }
       ],
       revert: [
-        { q: "Revert PR khác gì với việc sửa trực tiếp trên main?", opts: ["Không khác gì", "Revert nhanh hơn, an toàn hơn, có lịch sử rõ ràng", "Revert chậm hơn nhưng chính xác hơn", "Chỉ Admin mới dùng được Revert"], ans: 1 },
-        { q: "Sau khi revert, code cũ có bị mất vĩnh viễn không?", opts: ["Có, mất hoàn toàn", "Không, code vẫn còn trong lịch sử Git, dev tạo nhánh mới để sửa", "Chỉ mất nếu xóa nhánh", "Cần backup trước khi revert"], ans: 1 }
+        { q: "Revert PR khác gì sửa vội trên main?", opts: ["Không khác", "Nhanh cứu main, an toàn, lịch sử rõ — rồi hotfix qua nhánh", "Chậm hơn và xóa lịch sử", "Chỉ Admin"], ans: 1 },
+        { q: "Sau revert, code cũ mất vĩnh viễn?", opts: ["Có", "Không — vẫn trong lịch sử Git, tạo nhánh fix để sửa", "Chỉ mất nếu private", "Cần USB backup"], ans: 1 }
       ],
       issues: [
-        { q: "Draft PR khác gì PR thường?", opts: ["Không khác gì", "Draft PR không thể Approve/Merge, chỉ để nhận góp ý sớm", "Draft PR không cần review", "Draft PR tự động merge sau 24h"], ans: 1 },
-        { q: "Viết 'Closes #4' trong mô tả PR có tác dụng gì?", opts: ["Chỉ là ghi chú, không có tác dụng", "Tự động đóng Issue #4 khi PR được merge", "Xóa Issue #4 ngay lập tức", "Gắn Issue #4 vào PR nhưng không đóng"], ans: 1 }
+        { q: "Draft PR khác PR thường?", opts: ["Không khác", "Không Approve/Merge — chỉ góp ý sớm khi code chưa xong", "Tự merge 24h", "Không cần mô tả"], ans: 1 },
+        { q: "Closes #4 trong mô tả PR?", opts: ["Ghi chú thôi", "Tự đóng Issue #4 khi PR merge", "Xóa issue ngay", "Gắn nhưng không đóng"], ans: 1 },
+        { q: "Nhóm Free không bật được branch protection — nguyên nhân hay gặp?", opts: ["Git hỏng", "Repo Private trên org Free — cần Public hoặc Education/Team", "Thiếu RAM", "Sai mật khẩu Wi‑Fi"], ans: 1 }
       ],
       endtoend: [
-        { q: "Tại sao BE nên mở Draft PR với Mock API trước?", opts: ["Để FE có thể code song song dựa trên API contract", "Vì GitHub yêu cầu", "Để Reviewer xem trước", "Không cần làm vậy"], ans: 0 },
-        { q: "Bước nào quan trọng nhất trước khi tạo PR?", opts: ["Xóa nhánh cũ", "Sync code mới nhất từ main", "Đổi tên nhánh", "Tạo Issue mới"], ans: 1 },
-        { q: "CI/CD có vai trò gì sau khi merge?", opts: ["Không có vai trò gì", "Tự động build, test, và deploy — đảm bảo code hoạt động", "Xóa nhánh đã merge", "Gửi email cho nhóm"], ans: 1 }
+        { q: "Vì sao Chi mở Draft Mock API sớm?", opts: ["Để Bình code song song theo contract", "GitHub bắt buộc", "Để xóa main", "Không cần"], ans: 0 },
+        { q: "Trước khi mở PR, bước quan trọng?", opts: ["Xóa nhánh", "Sync main mới nhất vào nhánh feature", "Đổi username", "Tắt CI"], ans: 1 },
+        { q: "Least privilege: lập trình viên SmartExam thường cần quyền?", opts: ["Admin cả nhóm", "Write (dev) · Maintain (trưởng nhóm merge) · ít Admin", "Chỉ Read", "Billing manager"], ans: 1 },
+        { q: "CI/CD sau merge làm gì?", opts: ["Không gì", "Tự build/test/deploy — main luôn ở trạng thái chạy được", "Xóa issue", "Gửi fax"], ans: 1 }
       ]
     };
 
     let activeTab = 'flow';
     let step = 0;
-    
-    let progressSet = new Set();
+    let teachMode = localStorage.getItem('teachMode') !== '0';
+    let askClassMode = false;
+    let progressSet = new Set(JSON.parse(localStorage.getItem('progressSet') || '[]'));
+    let completedTabs = new Set(JSON.parse(localStorage.getItem('completedTabs') || '[]'));
+    let predicted = {}; // key tab_step -> true if answered
+    let lastToastStep = '';
 
     const stepDotsEl = document.getElementById('stepDots');
     const stepTitleEl = document.getElementById('stepTitle');
@@ -1787,23 +1831,66 @@
     const termBox = document.getElementById('termBox');
     const codeBox = document.getElementById('codeBox');
     const stepBadge = document.getElementById('stepBadge');
-    
-    // UI Elements
     const progressBar = document.getElementById('progressBar');
     const quizOverlay = document.getElementById('quizOverlay');
-    const quizModal = document.getElementById('quizModal');
     const quizContent = document.getElementById('quizContent');
     const quizTabName = document.getElementById('quizTabName');
+    const predictBox = document.getElementById('predictBox');
+    const predictOpts = document.getElementById('predictOpts');
+    const predictWhy = document.getElementById('predictWhy');
+    const predictQ = document.getElementById('predictQ');
+    const flowTag = document.getElementById('flowTag');
+    const storyText = document.getElementById('storyText');
+    const teachBadge = document.getElementById('teachBadge');
+    const teachToggle = document.getElementById('teachToggle');
+    const projectorToggle = document.getElementById('projectorToggle');
+    const ghChrome = document.getElementById('ghChrome');
+    const ghChromeHead = document.getElementById('ghChromeHead');
+    const ghChromeBody = document.getElementById('ghChromeBody');
+    const revealContent = document.getElementById('revealContent');
+    const rightReveal = document.getElementById('rightReveal');
+    const askClassHint = document.getElementById('askClassHint');
+    const toastEl = document.getElementById('toast');
 
     function getConfig() { return tabConfig[activeTab]; }
 
+    function predKey() { return activeTab + '_' + step; }
+
+    function isPredictPending(s) {
+      if (!teachMode || !s.predict) return false;
+      return !predicted[predKey()];
+    }
+
+    function updateTeachUI() {
+      teachToggle.classList.toggle('on', teachMode);
+      teachToggle.setAttribute('aria-pressed', teachMode ? 'true' : 'false');
+      teachBadge.textContent = teachMode ? '🎯 Dự đoán ON' : '⚡ Trình chiếu nhanh';
+    }
+
+    function showToast(msg) {
+      if (!msg) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toastEl.classList.remove('show'), 2800);
+    }
+
     function updateProgress() {
-      const stepId = activeTab + '_' + step;
-      progressSet.add(stepId);
-      
+      progressSet.add(predKey());
+      localStorage.setItem('progressSet', JSON.stringify([...progressSet]));
       const { steps } = getConfig();
       const p = Math.round(((step + 1) / steps.length) * 100);
       progressBar.style.width = p + '%';
+
+      // mark tab done if all steps visited
+      const allDone = steps.every((_, i) => progressSet.has(activeTab + '_' + i));
+      if (allDone) {
+        completedTabs.add(activeTab);
+        localStorage.setItem('completedTabs', JSON.stringify([...completedTabs]));
+      }
+      document.querySelectorAll('.tab').forEach(t => {
+        t.classList.toggle('done', completedTabs.has(t.dataset.tab));
+      });
     }
 
     function buildDots() {
@@ -1813,52 +1900,131 @@
         const d = document.createElement('div');
         d.className = 'step-dot' + (i === step ? ' on' : '');
         d.textContent = i;
-        d.setAttribute('aria-label', `Bước ${i}`);
+        d.setAttribute('aria-label', 'Bước ' + i);
         d.addEventListener('click', () => { step = i; render(); });
         stepDotsEl.appendChild(d);
       }
     }
 
+    function renderPredict(s) {
+      const pending = isPredictPending(s);
+      if (teachMode && s.predict) {
+        predictBox.classList.add('show');
+        predictQ.textContent = '🎯 ' + s.predict.q;
+        predictOpts.innerHTML = '';
+        predictWhy.classList.remove('show');
+        predictWhy.textContent = '';
+        s.predict.opts.forEach((opt, i) => {
+          const b = document.createElement('button');
+          b.className = 'predict-opt';
+          b.textContent = opt;
+          if (predicted[predKey()]) {
+            b.disabled = true;
+            if (i === s.predict.ans) b.classList.add('correct');
+          } else {
+            b.addEventListener('click', () => {
+              predicted[predKey()] = true;
+              const correct = i === s.predict.ans;
+              predictOpts.querySelectorAll('.predict-opt').forEach((btn, j) => {
+                btn.disabled = true;
+                if (j === s.predict.ans) btn.classList.add('correct');
+                else if (j === i && !correct) btn.classList.add('wrong');
+              });
+              predictWhy.innerHTML = (correct ? '✅ Đúng! ' : '❌ Chưa chính xác. ') + s.predict.why;
+              predictWhy.classList.add('show');
+              render();
+            });
+          }
+          predictOpts.appendChild(b);
+        });
+        if (predicted[predKey()]) {
+          predictWhy.innerHTML = '✅ ' + s.predict.why;
+          predictWhy.classList.add('show');
+        }
+      } else {
+        predictBox.classList.remove('show');
+      }
+
+      const hide = pending || askClassMode;
+      revealContent.classList.toggle('hidden-by-predict', hide);
+      rightReveal.classList.toggle('hidden-by-predict', hide);
+      askClassHint.style.display = (hide && teachMode) ? 'block' : 'none';
+    }
+
+    function renderGh(s) {
+      if (s.gh && !isPredictPending(s) && !askClassMode) {
+        ghChrome.classList.add('show');
+        ghChromeHead.innerHTML = s.gh.tabs.map((t, i) =>
+          `<div class="gh-tab${i === s.gh.active ? ' on' : ''}">${t}</div>`
+        ).join('');
+        ghChromeBody.innerHTML = s.gh.body;
+      } else {
+        ghChrome.classList.remove('show');
+      }
+    }
+
+    function typeTerm(html) {
+      termBox.innerHTML = String(html).split(String.fromCharCode(10)).map(function(l) { return '<div>' + l + '</div>'; }).join('');
+    }
+
     function render() {
       window.location.hash = activeTab + '/' + step;
       updateProgress();
+      updateTeachUI();
 
       const cfg = getConfig();
-      const { steps, attr, svg, deleteBranches } = cfg;
+      const { steps, attr, svg } = cfg;
       const s = steps[step];
 
-      stepBadge.textContent = `Bước ${step} / ${steps.length - 1}`;
+      storyText.textContent = stories[activeTab] || '';
+      stepBadge.textContent = 'Bước ' + step + ' / ' + (steps.length - 1);
       stepTitleEl.textContent = s.title;
       stepDescEl.textContent = s.desc;
-      termBox.innerHTML = s.term.split('\n').map(l => `<div>${l}</div>`).join('');
 
-      // A11y Callouts
-      allCalloutIds.forEach(id => { 
-        calloutMap[id].classList.remove('show'); 
-        calloutMap[id].setAttribute('role', 'alert');
-      });
-      (s.callouts || []).forEach(key => {
-        const id = calloutKeyToId[key];
-        if (id && calloutMap[id]) calloutMap[id].classList.add('show');
-      });
-
-      if (s.code) {
-        codeBox.innerHTML = s.code;
-        codeBox.classList.add('show');
+      if (s.flowTag) {
+        flowTag.style.display = 'inline-block';
+        flowTag.textContent = s.flowTag;
       } else {
-        codeBox.classList.remove('show');
+        flowTag.style.display = 'none';
       }
 
-      svg.querySelectorAll(`[${attr}]`).forEach(el => {
+      renderPredict(s);
+
+      if (!isPredictPending(s) && !askClassMode) {
+        typeTerm(s.term);
+        allCalloutIds.forEach(id => {
+          if (calloutMap[id]) {
+            calloutMap[id].classList.remove('show');
+            calloutMap[id].setAttribute('role', 'alert');
+          }
+        });
+        (s.callouts || []).forEach(key => {
+          const id = calloutKeyToId[key];
+          if (id && calloutMap[id]) calloutMap[id].classList.add('show');
+        });
+        if (s.code) {
+          codeBox.innerHTML = s.code;
+          codeBox.classList.add('show');
+        } else {
+          codeBox.classList.remove('show');
+        }
+        renderGh(s);
+
+        const tk = predKey();
+        if (s.toast && lastToastStep !== tk) {
+          lastToastStep = tk;
+          showToast(s.toast);
+        }
+      }
+
+      // SVG visibility by step
+      svg.querySelectorAll('[' + attr + ']').forEach(el => {
         const v = parseInt(el.getAttribute(attr));
         const hideV = parseInt(el.getAttribute('data-hide-step'));
         let isVisible = v <= step;
-        if (!isNaN(hideV) && step >= hideV) {
-          isVisible = false;
-        }
+        if (!isNaN(hideV) && step >= hideV) isVisible = false;
         el.classList.toggle('on', isVisible);
       });
-
       svg.querySelectorAll('[data-delete-step]').forEach(p => {
         const delStep = parseInt(p.getAttribute('data-delete-step'));
         p.classList.toggle('deleted', step >= delStep);
@@ -1866,23 +2032,17 @@
 
       const isLastStep = step === steps.length - 1;
       document.getElementById('prevBtn').disabled = step === 0;
-      
       const nextBtn = document.getElementById('nextBtn');
-      if (isLastStep) {
-        nextBtn.textContent = 'Mở bài tập 📝';
-      } else {
-        nextBtn.textContent = 'Bước tiếp →';
-      }
+      nextBtn.textContent = isLastStep ? 'Mở bài tập 📝' : 'Bước tiếp →';
 
       buildDots();
 
       document.querySelectorAll('.role').forEach(r => r.classList.remove('active'));
       (s.roles || []).forEach(roleKey => {
-        const el = document.querySelector(`.role[data-role="${roleKey}"]`);
+        const el = document.querySelector('.role[data-role="' + roleKey + '"]');
         if (el) el.classList.add('active');
       });
-      
-      // Update Tab ARIA
+
       document.querySelectorAll('.tab').forEach(t => {
         const isActive = t.dataset.tab === activeTab;
         t.setAttribute('aria-selected', isActive);
@@ -1890,7 +2050,6 @@
       });
     }
 
-    // Hash Parser
     function parseHash() {
       const h = window.location.hash.replace('#', '').split('/');
       if (h.length === 2 && tabConfig[h[0]]) {
@@ -1899,28 +2058,45 @@
         const maxStep = tabConfig[activeTab].steps.length - 1;
         if (step > maxStep) step = maxStep;
       }
-      
       document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-      const activeTabEl = document.querySelector(`.tab[data-tab="${activeTab}"]`);
+      const activeTabEl = document.querySelector('.tab[data-tab="' + activeTab + '"]');
       if (activeTabEl) activeTabEl.classList.add('active');
-      
       Object.values(tabConfig).forEach(c => { c.svg.style.display = 'none'; });
       getConfig().svg.style.display = 'block';
       render();
     }
 
-    document.getElementById('prevBtn').addEventListener('click', () => { if (step > 0) { step--; render(); } });
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (step > 0) { step--; render(); }
+    });
     document.getElementById('nextBtn').addEventListener('click', () => {
       const { steps } = getConfig();
-      if (step < steps.length - 1) { 
-        step++; 
-        render(); 
+      const s = steps[step];
+      if (isPredictPending(s)) {
+        showToast('🎯 Chọn đáp án dự đoán trước — hoặc tắt 🎯 để skip');
+        return;
+      }
+      if (step < steps.length - 1) {
+        step++;
+        render();
       } else {
         openQuiz();
       }
     });
 
-    // Keyboard Shortcuts
+    teachToggle.addEventListener('click', () => {
+      teachMode = !teachMode;
+      localStorage.setItem('teachMode', teachMode ? '1' : '0');
+      if (!teachMode) askClassMode = false;
+      render();
+    });
+
+    projectorToggle.addEventListener('click', () => {
+      const on = document.documentElement.classList.toggle('projector');
+      projectorToggle.classList.toggle('on', on);
+      projectorToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+
     document.addEventListener('keydown', (e) => {
       if (quizOverlay.classList.contains('open')) {
         if (e.key === 'Escape') closeQuiz();
@@ -1929,6 +2105,13 @@
       if (e.key === 'ArrowRight') document.getElementById('nextBtn').click();
       if (e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
       if (e.key.toLowerCase() === 't') themeBtn.click();
+      if (e.key.toLowerCase() === 'p') teachToggle.click();
+      if (e.key.toLowerCase() === 'h') {
+        askClassMode = !askClassMode;
+        if (askClassMode) teachMode = true;
+        render();
+        showToast(askClassMode ? 'Ẩn đáp án — hỏi lớp!' : 'Hiện lại đáp án');
+      }
       if (e.key.toLowerCase() === 'q' && step === getConfig().steps.length - 1) openQuiz();
       if (e.key >= '1' && e.key <= '6') {
         const tabs = Array.from(document.querySelectorAll('.tab'));
@@ -1943,13 +2126,13 @@
         t.classList.add('active');
         activeTab = t.dataset.tab;
         step = 0;
+        askClassMode = false;
         Object.values(tabConfig).forEach(c => { c.svg.style.display = 'none'; });
         getConfig().svg.style.display = 'block';
         render();
       });
     });
 
-    /* ===== THEME TOGGLE ===== */
     const themeBtn = document.getElementById('themeToggle');
     function applyTheme(mode) {
       document.documentElement.classList.toggle('light', mode === 'light');
@@ -1962,43 +2145,60 @@
     });
     applyTheme(localStorage.getItem('theme') || 'dark');
 
-    /* ===== QUIZ SYSTEM ===== */
     let quizScore = 0;
-    
+
+    function fireConfetti() {
+      const c = document.getElementById('confettiCanvas');
+      const ctx = c.getContext('2d');
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+      const pieces = Array.from({ length: 80 }, () => ({
+        x: Math.random() * c.width,
+        y: -20 - Math.random() * 100,
+        r: 3 + Math.random() * 5,
+        c: ['#e8563c', '#31c48d', '#5b8def', '#9b6bff', '#f2b544'][Math.floor(Math.random() * 5)],
+        v: 2 + Math.random() * 4,
+        a: Math.random() * 0.1
+      }));
+      let frames = 0;
+      function tick() {
+        frames++;
+        ctx.clearRect(0, 0, c.width, c.height);
+        pieces.forEach(p => {
+          p.y += p.v;
+          p.x += Math.sin(frames * 0.05 + p.a) * 1.5;
+          ctx.fillStyle = p.c;
+          ctx.fillRect(p.x, p.y, p.r, p.r * 1.4);
+        });
+        if (frames < 90) requestAnimationFrame(tick);
+        else ctx.clearRect(0, 0, c.width, c.height);
+      }
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) tick();
+    }
+
     function openQuiz() {
       quizScore = 0;
       quizTabName.textContent = getConfig().title;
       quizOverlay.classList.add('open');
       const questions = quizData[activeTab] || [];
-      
       let html = '';
       questions.forEach((q, idx) => {
-        html += `<div class="quiz-question" data-idx="${idx}">
-          <p>Câu ${idx + 1}: ${q.q}</p>
-          ${q.opts.map((opt, oIdx) => `
-            <button class="quiz-option" data-oidx="${oIdx}">${opt}</button>
-          `).join('')}
-          <div class="quiz-explanation"></div>
-        </div>`;
+        html += '<div class="quiz-question" data-idx="' + idx + '"><p>Câu ' + (idx + 1) + ': ' + q.q + '</p>';
+        html += q.opts.map((opt, oIdx) =>
+          '<button class="quiz-option" data-oidx="' + oIdx + '">' + opt + '</button>'
+        ).join('');
+        html += '<div class="quiz-explanation"></div></div>';
       });
-      html += `<div class="quiz-score" style="display:none">
-        <div class="score-num">0/${questions.length}</div>
-        <p>điểm</p>
-      </div>`;
+      html += '<div class="quiz-score" style="display:none"><div class="score-num">0/' + questions.length + '</div><p>điểm</p><div class="lab-checklist" id="labCheck" style="display:none"></div></div>';
       quizContent.innerHTML = html;
-      
       quizContent.querySelectorAll('.quiz-option').forEach(btn => {
         btn.addEventListener('click', handleQuizAnswer);
       });
     }
 
-    function closeQuiz() {
-      quizOverlay.classList.remove('open');
-    }
+    function closeQuiz() { quizOverlay.classList.remove('open'); }
     document.getElementById('quizClose').addEventListener('click', closeQuiz);
-    quizOverlay.addEventListener('click', (e) => {
-      if (e.target === quizOverlay) closeQuiz();
-    });
+    quizOverlay.addEventListener('click', (e) => { if (e.target === quizOverlay) closeQuiz(); });
 
     function handleQuizAnswer(e) {
       const btn = e.target;
@@ -2006,45 +2206,47 @@
       const qIdx = parseInt(questionDiv.dataset.idx);
       const oIdx = parseInt(btn.dataset.oidx);
       const question = quizData[activeTab][qIdx];
-      
       const isCorrect = oIdx === question.ans;
       if (isCorrect) quizScore++;
-      
       questionDiv.querySelectorAll('.quiz-option').forEach(b => {
         b.disabled = true;
         const bIdx = parseInt(b.dataset.oidx);
-        if (bIdx === question.ans) {
-          b.classList.add('correct');
-        } else if (bIdx === oIdx && !isCorrect) {
-          b.classList.add('wrong');
-        }
+        if (bIdx === question.ans) b.classList.add('correct');
+        else if (bIdx === oIdx && !isCorrect) b.classList.add('wrong');
       });
-      
       const expl = questionDiv.querySelector('.quiz-explanation');
-      if (isCorrect) {
-        expl.innerHTML = '✅ Chính xác!';
-      } else {
-        expl.innerHTML = '❌ Sai rồi. Đáp án đúng là: <b>' + question.opts[question.ans] + '</b>';
-      }
+      expl.innerHTML = isCorrect ? '✅ Chính xác!' : '❌ Sai rồi. Đáp án: <b>' + question.opts[question.ans] + '</b>';
       expl.classList.add('show');
-      
+
       const allQuestions = quizContent.querySelectorAll('.quiz-question');
       const answered = Array.from(allQuestions).every(q => q.querySelector('.quiz-option:disabled'));
       if (answered) {
         const scoreDiv = quizContent.querySelector('.quiz-score');
-        scoreDiv.querySelector('.score-num').textContent = `${quizScore}/${allQuestions.length}`;
+        scoreDiv.querySelector('.score-num').textContent = quizScore + '/' + allQuestions.length;
         scoreDiv.style.display = 'block';
+        completedTabs.add(activeTab);
+        localStorage.setItem('completedTabs', JSON.stringify([...completedTabs]));
+        document.querySelectorAll('.tab').forEach(t => {
+          t.classList.toggle('done', completedTabs.has(t.dataset.tab));
+        });
+        if (quizScore >= Math.ceil(allQuestions.length * 0.6)) {
+          const lc = document.getElementById('labCheck');
+          lc.style.display = 'block';
+          lc.innerHTML = '<b>Sẵn sàng Lab nhóm (mục 18) nếu:</b><br>• Org + repo Public smartexam + main protection<br>• Mỗi người 1 PR được người khác review & merge<br>• Không ai tự merge PR của chính mình<br>• Contribution graph đã xanh';
+          fireConfetti();
+        }
+        if (completedTabs.size === 6) {
+          showToast('🎉 Hoàn thành cả 6 kịch bản SmartExam!');
+          fireConfetti();
+        }
       }
     }
 
     // Init
+    updateTeachUI();
     window.addEventListener('hashchange', parseHash);
-    if (window.location.hash) {
-      parseHash();
-    } else {
-      render();
-    }
+    if (window.location.hash) parseHash();
+    else render();
   </script>
 </body>
-
 </html>
